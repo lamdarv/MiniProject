@@ -3,7 +3,7 @@
 
 Semua anggota ikut berkontribusi tapi tetap punya tanggung jawabnya di bagian dokumennya masing-masing, tidak hanya berfokus pada beberapa anggota tim dengan tujuan meningkatkan kerja tim.
 
-##Role
+## Role
 Dengan kesepakatan proyek, terdapat pembagian Role sebagai berikut:
 - Project Manager: Lamda Richo
 - Front-End (FE): Gefi Aulia
