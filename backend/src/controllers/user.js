@@ -6,30 +6,36 @@ const randexp = require('randexp')
 
 const register = async (req, res) => {
     try {
-        let user = req.body
-        let result = user.password.match(/^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)[A-Za-z\d]{8,32}$/)
-        if(result){
-            const salt = bcrypt.genSaltSync(parseInt(process.env.SALT))
-            const password = bcrypt.hashSync(user.password, salt)
-            user.password = password
-            const saveUser = await Users.create(user)
-            res.status(201).json({ message : "Successfully registered a new user", saveUser})
+      let user = req.body;
+      let result = user.password.match(/^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)[A-Za-z\d]{8,32}$/);
+      if (result) {
+        // Validasi email
+        if (!user.email.endsWith("@polban.ac.id")) {
+          res.status(400).json({ message: "Please register using a valid Polban email" });
+          return;
         }
-        else
-            res.status(400).json({ message : "Please input a valid password"})
+  
+        const salt = bcrypt.genSaltSync(parseInt(process.env.SALT));
+        const password = bcrypt.hashSync(user.password, salt);
+        user.password = password;
+        const saveUser = await Users.create(user);
+        res.status(201).json({ message: "Successfully registered a new user", saveUser });
+      } else {
+        res.status(400).json({ message: "Please input a valid password" });
+      }
     } catch (error) {
-        res.status(400).json( {
-            message : error.message
-        })
+      res.status(400).json({
+        message: error.message,
+      });
     }
-}
+  };
 
 const login = async (req, res) => {
     try {
         const {email, password} = req.body
         const user = await Users.findOne({email})
         if(!user)
-            res.status(404).json({message : "username not found"})
+            res.status(404).json({message : "email not found"})
         else{
             const match = await bcrypt.compare(password, user.password)
             if (match) {
