@@ -134,7 +134,7 @@ export default function Register() {
 
 						<label className="pt-3 text-[#898989]">Email</label>
 						<input onChange={handleEmail} className="border-b-2 border-b-gray-300 outline-none hover:border-b-black focus:border-b-black"
-							value={email} type="email" placeholder='johndoe@example.com'/>
+							value={email} type="email" placeholder='johndoe@polban.ac.id'/>
 
 						<label className="pt-3 text-[#898989]">Password</label>
 						<div className="relative">
