@@ -125,7 +125,7 @@ export default function Register() {
 							</button>
 						</div>
                         <div className="py-5 text-sm">
-                            <p>Sudah punya akun? <a href="/" class="no-underline hover:underline">Masuk disini</a></p>
+                            <p>Sudah punya akun? <a href="/" class="underline hover:font-medium text-xs">Masuk disini</a></p>
                         </div>
 					</div>	
 				</form>
