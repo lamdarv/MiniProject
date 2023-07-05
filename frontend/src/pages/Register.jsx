@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import axios from '../axiosConfig';
 
 export default function Register() {
 
@@ -48,8 +49,24 @@ export default function Register() {
 		if (name === '' || nim === '' || username === '' || email === '' || password === '') {
 			setError(true);
 		} else {
-			setSubmitted(true);
-			setError(false);
+			// Create an object with the form data
+            const formData = {
+                name: name,
+                nim: nim,
+                username: username,
+                email: email,
+                password: password
+            };
+
+            // Send the data to the Back-End using Axios
+            axios.post('/api/register', formData)
+                .then(response => {
+                    setSubmitted(true);
+                    setError(false);
+                })
+                .catch(error => {
+                    setError(true);
+                });
 		}
 	};
 
