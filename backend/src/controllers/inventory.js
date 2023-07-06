@@ -42,14 +42,14 @@ exports.create = async (req, res) => {
 			return res.status(400).json("Error: " + err.message);
 		  }
 	
-		  const schema = new Post({
+		  const schema = new Inventory({
 			nama: req.body.nama,
 			deskripsi: req.body.deskripsi,
 			tgl_kepemilikan: req.body.tgl_kepemilikan,
 			list_peminjam: req.body.list_peminjam,
 			status: req.body.status,
 			gambar: req.file ? req.file.filename : undefined,
-			user: req.user._id, // Menggunakan ID pengguna yang sedang login
+			peminjam: req.user._id, // Menggunakan ID pengguna yang sedang login
 		  });
 	
 		  const schemaCreate = await schema.save();
