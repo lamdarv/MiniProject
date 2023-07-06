@@ -6,14 +6,14 @@ const { v4: uuidv4 } = require("uuid");
 const DIR = './public/';
 
 const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, DIR);
-  },
-  filename: (req, file, cb) => {
-    const fileName = file.originalname.toLowerCase().split(' ').join('-');
-    cb(null, uuidv4() + '-' + path.extname(file.originalname))
-  }
-});
+	destination: (req, file, cb) => {
+	  cb(null, DIR);
+	},
+	filename: (req, file, cb) => {
+	  const fileName = file.originalname.toLowerCase().split(' ').join('-');
+	  cb(null, uuidv4() + '-' + fileName);
+	}
+  });
 
 const upload = multer({
   storage: storage,
@@ -41,25 +41,27 @@ exports.create = async (req, res) => {
 			console.log(err);
 			return res.status(400).json("Error: " + err.message);
 		  }
-	
-		  const schema = new Inventory({
+		  const url = req.protocol + '://' + req.get('host')
+		  const schema = new Post({
 			nama: req.body.nama,
 			deskripsi: req.body.deskripsi,
 			tgl_kepemilikan: req.body.tgl_kepemilikan,
 			list_peminjam: req.body.list_peminjam,
 			status: req.body.status,
-			gambar: req.file ? req.file.filename : undefined,
-			peminjam: req.user._id, // Menggunakan ID pengguna yang sedang login
+			gambar: url + '/public/' + req.file.filename,
+			user: req.user._id, // Menggunakan ID pengguna yang sedang login
 		  });
 	
 		  const schemaCreate = await schema.save();
 		  res.json(schemaCreate);
+		  const imageUrl = 'URL_GAMBAR'; 
+		  res.json({ url: imageUrl });
 		});
 	  } catch (e) {
 		console.error(e);
 		res.status(500).send("error");
 	  }
-    // const schema = new Post({
+    // const schema = new Inventory({
     //   nama: req.body.nama,
     //   deskripsi: req.body.deskripsi,
     //   tgl_kepemilikan: req.body.tgl_kepemilikan,
@@ -211,7 +213,7 @@ exports.update = async (req, res) => {
 		res.status(500).send("error");
 	}
 	// try {
-	// 	const schemaUpdate = await Post.updateOne(
+	// 	const schemaUpdate = await Inventory.updateOne(
 	// 		{ _id: req.params.id },
 	// 		{
 	// 			nama: req.body.nama,

@@ -12,6 +12,7 @@ const InventoryAdmin = () => {
   const [showModal, setShowModal] = useState(false);
   const [inventoryId, setInventoryId] = useState(null);
   const [showModalUpdate, setShowModalUpdate] = useState(false);
+  const [imageUrl, setImageUrl] = useState('');
 
   useEffect(() => {
     getInventories();
@@ -25,6 +26,8 @@ const InventoryAdmin = () => {
           Authorization: `Bearer ${token}`
         }
       });
+      const imageUrl = response.data.url;
+      setImageUrl(imageUrl);
 
       setInventories(response.data);
     } catch (error) {
@@ -111,6 +114,12 @@ const InventoryAdmin = () => {
                       <tr>
                         <td className='font-quicksand font-normal text-lg pr-6'><strong>Status</strong></td>
                         <td className='font-quicksand font-normal text-lg pr-6'>{inventory.status}</td>
+                      </tr>
+                      <tr>
+                        <td className='font-quicksand font-normal text-lg pr-6'><strong>Gambar</strong></td>
+                        <td className='font-quicksand font-normal text-lg pr-6'>
+                          <img src="http://localhost:5001/public/7f18ab59-b8c6-46f4-8ee7-5566cfde47c1-santika.jpg" alt="Gambar Inventaris" />
+                        </td>
                       </tr>
                       <tr>
                         <td className='font-quicksand font-normal text-lg pr-6'><strong>List Peminjam</strong></td>
