@@ -1,15 +1,18 @@
 import { useState } from 'react';
+import axios from '../axiosConfig';
+import { useNavigate } from 'react-router-dom';
 
 export default function Register() {
 
 	// States for registration
 	const [email, setEmail] = useState('');
 	const [password, setPassword] = useState('');
-  const [isPasswordVisible, setIsPasswordVisible] = useState(false);
+	const [isPasswordVisible, setIsPasswordVisible] = useState(false);
+	const navigate = useNavigate();
 
-  function togglePasswordVisibility() {
-    setIsPasswordVisible((prevState) => !prevState);
-  }
+	function togglePasswordVisibility() {
+		setIsPasswordVisible((prevState) => !prevState);
+	}
 
 	// States for checking the errors
 	const [submitted, setSubmitted] = useState(false);
@@ -33,8 +36,25 @@ export default function Register() {
 		if (email === '' || password === '') {
 			setError(true);
 		} else {
-			setSubmitted(true);
-			setError(false);
+			// Create an object with the form data
+			const formData = {
+				email: email,
+				password: password
+			};
+
+			// Send the data to the Back-End using Axios
+			axios.post('/api/login', formData)
+				.then(response => {
+					const token = response.data.token;
+					localStorage.setItem('token', token);
+					console.log(localStorage.getItem('token'));
+					setSubmitted(true);
+					setError(false);
+					navigate("/inventories");
+				})
+				.catch(error => {
+					setError(true);
+				});
 		}
 	};
 
