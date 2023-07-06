@@ -23,7 +23,10 @@ const siteSchema = mongoose.Schema(
 			type: String,
 			required: true,
 		},
-
+		gambar: {
+			type: String,
+			required: true,
+		},
 	},
 	{ timestamps: true }
 );
