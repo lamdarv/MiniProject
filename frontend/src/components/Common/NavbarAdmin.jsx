@@ -168,9 +168,9 @@ export default function NavbarAdmin() {
       </ul>
       <a href="/profile" onMouseOver={handleMouseOverProfile} onMouseLeave={handleMouseLeaveProfile} className=''>
         <div className='flex bg-white p-3 m-12 rounded-[10px] shadow-md hover:drop-shadow-2xl bg-custom-gray-3'>
-          {/* <div className='flex justify-center items-center' id="profile">
-            <img className='w-[45px] ' src={process.env.PUBLIC_URL+'/assets/dkm_pict.png'} alt="" />
-          </div> */}
+          <div className='flex justify-center items-center' id="profile">
+            <img className='w-[45px] ' src={process.env.PUBLIC_URL+'/assets/mhs_icon.svg'} alt="" />
+          </div>
           <div className='ml-2 items-center font-quicksand' id="lembaga">
             <strong>lamdarv19</strong>
             <p className='text-[13px]'>as Admin</p>

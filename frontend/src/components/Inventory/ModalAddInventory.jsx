@@ -122,7 +122,7 @@ const ModalAddInventory = ({isOpen, onRequestClose}) => {
                     <p className="text-gray-500 text-sm ml-1 mt-0">Maximal Character : 20</p>
                   </div>
                   {/* Tanggal Kepemilikan */}
-                  <div className="mb-6 relative">
+                  <div className="mb-6 relative w-full">
                     <label
                       className="font-quicksand block font-semibold text-black mb-2"
                       htmlFor="tgl_kepemilikan"
