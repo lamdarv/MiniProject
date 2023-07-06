@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 
 const notificationSchema = new mongoose.Schema(
   {
-    postId: {
+    inventoryId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'Post',
       required: true,
