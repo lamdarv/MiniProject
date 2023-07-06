@@ -1,7 +1,11 @@
 const mongoose = require("mongoose");
 
 const siteSchema = mongoose.Schema(
-	{
+	{	
+		peminjam: {
+			type : String,
+			required: true
+		},
 		nama: {
 			type: String,
 			required: true,
@@ -20,6 +24,10 @@ const siteSchema = mongoose.Schema(
 			required: false,
 		},
 		status: {
+			type: String,
+			required: true,
+		},
+		check: {
 			type: String,
 			required: true,
 		},

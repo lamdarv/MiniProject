@@ -10,4 +10,7 @@ router.post('/create', postController.create)
 router.patch("/:id", postController.update)
 router.delete("/:id", postController.delete)
 
+router.post('/approve/:id', postController.approvePost)
+router.post('/reject/:id', postController.rejectPost)
+
 module.exports = router
