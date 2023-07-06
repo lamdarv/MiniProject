@@ -133,17 +133,16 @@ export default function Register() {
             <div className="py-5 text-sm">
               <p>Lupa password? <a href="/" class="no-underline hover:underline">Klik di sini!</a></p>
             </div>  
-
-						<div className="flex justify-center pt-5">
-							<button onClick={handleSubmit} className="text-white w-[50%] border-2 bg-[#2B5579] hover:bg-[#4ba3d3] rounded-full py-2 font-bold "
-									type="submit">
-								Daftar
-							</button>
-						</div>
+				<div className="flex justify-center pt-5">
+					<button onClick={handleSubmit} className="text-white w-[50%] border-2 bg-[#2B5579] hover:bg-[#4ba3d3] rounded-full py-2 font-bold "
+							type="submit">
+						Masuk
+					</button>
+				</div>
             <div className="py-10 text-sm">
-              <p>Belum punya akun? <a href="/register" class="no-underline hover:underline">Daftar di sini!</a></p>
+              <p>Belum punya akun? <a href="/register" class="underline hover:font-medium text-xs">Daftar di sini!</a></p>
             </div>
-					</div>	
+			</div>	
 				</form>
 			</div>		
 		</div>

@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import axios from '../axiosConfig';
+import { useNavigate } from 'react-router-dom';
 
 export default function Register() {
 
@@ -10,6 +11,7 @@ export default function Register() {
 	const [email, setEmail] = useState('');
 	const [password, setPassword] = useState('');
 	const [isPasswordVisible, setIsPasswordVisible] = useState(false);
+	const navigate = useNavigate();
 
 	// States for checking the errors
 	const [submitted, setSubmitted] = useState(false);
@@ -66,8 +68,9 @@ export default function Register() {
             // Send the data to the Back-End using Axios
             axios.post('/api/register', formData)
                 .then(response => {
-			setSubmitted(true);
-			setError(false);
+					setSubmitted(true);
+					setError(false);
+					navigate("/");
                 })
                 .catch(error => {
                     setError(true);
@@ -161,7 +164,7 @@ export default function Register() {
 						<div className="flex justify-center pt-5">
 							<button onClick={handleSubmit} className="text-white w-[50%] border-2 bg-[#2B5579] hover:bg-[#4ba3d3] rounded-full py-2 font-bold "
 									type="submit">
-								Daftar
+									Daftar
 							</button>
 						</div>
                         <div className="py-5 text-sm">
