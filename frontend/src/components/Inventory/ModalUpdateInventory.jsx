@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from "react-router-dom";
-import axios from 'axios';
+import axios from '../../axiosConfig';
 import { useNavigate } from 'react-router-dom';
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
@@ -41,12 +41,20 @@ const ModalUpdateInventory = ({isOpen, onRequestClose, inventoryId}) => {
 
 
     const getInventoryById = async () => {
-    const response = await axios.get(`http://localhost:5000/api/inventory/${inventoryId}`)
-    setNama(response.data.nama);
-    setDeskripsi(response.data.deskripsi);
-    setTglKepemilikan(new Date(response.data.tgl_kepemilikan)); // use Date constructor to parse the date string
-    setStatus(response.data.status);
-    setPeminjam(response.data.list_peminjam);
+      try {
+        const token = localStorage.getItem('token');
+        // Mengatur header dengan token
+        axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+
+        const response = await axios.get(`/api/inventory/${inventoryId}`);
+        setNama(response.data.nama);
+        setDeskripsi(response.data.deskripsi);
+        setTglKepemilikan(new Date(response.data.tgl_kepemilikan)); // use Date constructor to parse the date string
+        setStatus(response.data.status);
+        setPeminjam(response.data.list_peminjam);
+      } catch (error) {
+          console.error('Error fetching inventory:', error);
+      }
     };
 
     const updatePost = async (event) => {
@@ -69,7 +77,9 @@ const ModalUpdateInventory = ({isOpen, onRequestClose, inventoryId}) => {
       };
     
       try {
-        const response = await axios.patch(`http://localhost:5000/api/inventory/${inventoryId}`, data);
+        const token = localStorage.getItem('token');
+        axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+        const response = await axios.patch(`/api/inventory/${inventoryId}`, data);
         window.alert('Inventaris berhasil diupdate!');
         onRequestClose();
         // navigate('/inventories');

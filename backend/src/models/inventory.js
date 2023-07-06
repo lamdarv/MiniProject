@@ -28,4 +28,4 @@ const siteSchema = mongoose.Schema(
 	{ timestamps: true }
 );
 
-module.exports = mongoose.model("Post", siteSchema, "Post");
+module.exports = mongoose.model("Inventory", siteSchema, "Inventory");

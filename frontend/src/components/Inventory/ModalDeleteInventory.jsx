@@ -1,4 +1,5 @@
 import React from 'react'
+import axios from '../../axiosConfig';
 
 const ModalDeleteInventory = ({ visible, onClose, inventoryId, handleDeleteInventory }) => {
 
@@ -8,6 +9,8 @@ const ModalDeleteInventory = ({ visible, onClose, inventoryId, handleDeleteInven
 
     const onDeleteClick = async () => {
         try {
+            const token = localStorage.getItem('token');
+            axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
             await handleDeleteInventory(inventoryId);
             onClose();
         } catch (error) {

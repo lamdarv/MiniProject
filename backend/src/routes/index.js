@@ -7,7 +7,8 @@ router.post('/register', userController.register)
 router.post('/login', userController.login)
 router.post('/reset-password', userController.resetPassword)
 router.use('/user', verifyToken, require('./user'))
-router.use('/post', verifyToken, require('./post'))
+router.use('/inventory', verifyToken, require('./inventory'))
+
 
 
 module.exports = router

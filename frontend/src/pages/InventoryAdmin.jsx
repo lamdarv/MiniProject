@@ -1,4 +1,3 @@
-// import axios from 'axios';
 import axios from '../axiosConfig';
 import { Link, Navigate } from 'react-router-dom';
 import React, { useState, useEffect } from 'react';
@@ -35,13 +34,24 @@ const InventoryAdmin = () => {
     }, []);
 
     const getInventories = async () => {
-        const response = await axios.get("/api/inventory");
+        const token = localStorage.getItem('token');
+        const response = await axios.get("/api/inventory", {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        });
+        
         setInventories(response.data);
     };
     
     const deleteInventory = async (id) => {
         try {
-            await axios.delete(`/api/inventory/${id}`);
+            const token = localStorage.getItem('token');
+            await axios.delete(`/api/inventory/${id}`, {
+              headers: {
+                Authorization: `Bearer ${token}`
+              }
+            });
             window.alert("Invetaris berhasil dihapus!")
             getInventories();
         } catch (error) {

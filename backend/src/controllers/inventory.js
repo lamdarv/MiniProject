@@ -1,4 +1,4 @@
-const Post = require("../models/post");
+const Post = require("../models/inventory");
 
 exports.create = async (req, res) => {
     const schema = new Post({

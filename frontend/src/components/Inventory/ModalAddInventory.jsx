@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import axios from 'axios';
+import axios from '../../axiosConfig';
 import { useNavigate } from 'react-router-dom';
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
@@ -62,8 +62,10 @@ const ModalAddInventory = ({isOpen, onRequestClose}) => {
         };
 
         try {
-          const response = await axios.get(`http://localhost:5000/api/inventory/?nama=${nama}`);
-          await axios.post('http://localhost:5000/api/inventory/', data);
+          const token = localStorage.getItem('token');
+          axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+          const response = await axios.get(`/api/inventory/?nama=${nama}`);
+          await axios.post('/api/inventory/create', data);
           window.alert('Inventaris berhasil ditambahkan!');
           onRequestClose();
           // navigate('/inventories');
