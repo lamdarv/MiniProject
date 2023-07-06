@@ -1,4 +1,4 @@
-const Post = require("../models/inventory");
+const Inventory = require("../models/inventory");
 const multer = require("multer");
 const path = require("path");
 const { v4: uuidv4 } = require("uuid");
@@ -77,10 +77,94 @@ exports.create = async (req, res) => {
     // }
   };
   
+  
+  exports.approveInventory = async (req, res) => {
+	try {
+	  const { id } = req.params;
+  
+	  // Cari postingan berdasarkan ID
+	  const inventory = await Inventory.findById(id);
+	  if (!inventory) {
+		return res.status(404).json({ message: 'Inventory not found' });
+	  }
+  
+	  // Set status postingan menjadi "approved"
+	  inventory.check = 'approved';
+	  await inventory.save();
+  
+	  // Buat notifikasi
+	  const notification = new Notification({
+		inventoryId: inventory._id,
+		userId: req.user._id,
+		action: 'approve',
+		timestamp: new Date(),
+	  });
+	  await notification.save();
+  
+	  res.json({ message: 'Inventory approved', inventory });
+	} catch (error) {
+	  console.error(error);
+	  res.status(500).json({ message: 'Error approving post' });
+	}
+  };
+  
+  
 
+  exports.rejectInventory = async (req, res) => {
+	try {
+	  const { id } = req.params;
+  
+	  // Cari postingan berdasarkan ID
+	  const inventory = await Inventory.findById(id);
+	  if (!inventory) {
+		return res.status(404).json({ message: 'Inventory not found' });
+	  }
+  
+	  // Set status postingan menjadi "approved"
+	  inventory.check = 'rejected';
+	  await inventory.save();
+  
+	  // Buat notifikasi
+	  const notification = new Notification({
+		inventoryId: inventory._id,
+		userId: req.user._id,
+		action: 'reject',
+		timestamp: new Date(),
+	  });
+	  await notification.save();
+  
+	  res.json({ message: 'Inventory rejected', post });
+	} catch (error) {
+	  console.error(error);
+	  res.status(500).json({ message: 'Error rejected post' });
+	}
+  };
+  
+  
+
+  exports.getAllApproved = async (req, res) => {
+	try {
+	  const schemaGetAll = await Inventory.find({ check: "approved" });
+	  res.json(schemaGetAll);
+	} catch (e) {
+	  console.error(e);
+	  res.status(500).send("error");
+	}
+  };
+
+  exports.getAllRejected = async (req, res) => {
+	try {
+	  const schemaGetAll = await Inventory.find({ check: "rejected" });
+	  res.json(schemaGetAll);
+	} catch (e) {
+	  console.error(e);
+	  res.status(500).send("error");
+	}
+  };
+  
 exports.getAll = async (req, res) => {
 	try {
-		const schemaGetAll = await Post.find();
+		const schemaGetAll = await Inventory.find();
 		res.json(schemaGetAll);
 	} catch (e) {
 		console.error(e);
@@ -90,7 +174,7 @@ exports.getAll = async (req, res) => {
 
 exports.get = async (req, res) => {
 	try {
-		const schemaGet = await Post.findOne({ _id: req.params.id });
+		const schemaGet = await Inventory.findOne({ _id: req.params.id });
 		res.json(schemaGet);
 	} catch (e) {
 		console.error(e);
@@ -109,7 +193,7 @@ exports.update = async (req, res) => {
 			return res.status(400).json("Error: " + err.message);
 		  }
 	
-		  const schemaUpdate = await Post.updateOne(
+		  const schemaUpdate = await Inventory.updateOne(
 			{ _id: req.params.id },
 			{
 			  nama: req.body.nama,
@@ -147,7 +231,7 @@ exports.update = async (req, res) => {
 
 exports.delete = async (req, res) => {
 	try {
-		const schemaDelete = await Post.deleteOne({ _id: req.params.id });
+		const schemaDelete = await Inventory.deleteOne({ _id: req.params.id });
 		res.json(schemaDelete);
 	} catch (e) {
 		console.error(e);
