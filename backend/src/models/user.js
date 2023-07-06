@@ -9,6 +9,7 @@ const userSchema = mongoose.Schema({
     nim: {
         type: String,
         required: true,
+        minlength: 9,
         trim: true
     },
     username: {

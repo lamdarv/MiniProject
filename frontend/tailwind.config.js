@@ -18,6 +18,7 @@ module.exports = {
         'custom-green-4':'#E4FCD9',
         'main-blue':'#1B9AD0',
         'main-blue-2':'#2B5579',
+        'main-blue-3':'#8ABCD7',
       },
       backgroundImage: {
         'custom-gradient': 'linear-gradient(90deg, rgba(217, 217, 217, 0.4) 8.64%, rgba(217, 217, 217, 0) 100%)',

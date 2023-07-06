@@ -1,15 +1,18 @@
 import { useState } from 'react';
+import axios from '../axiosConfig';
+import { useNavigate } from 'react-router-dom';
 
 export default function Register() {
 
 	// States for registration
 	const [email, setEmail] = useState('');
 	const [password, setPassword] = useState('');
-  const [isPasswordVisible, setIsPasswordVisible] = useState(false);
+	const [isPasswordVisible, setIsPasswordVisible] = useState(false);
+	const navigate = useNavigate();
 
-  function togglePasswordVisibility() {
-    setIsPasswordVisible((prevState) => !prevState);
-  }
+	function togglePasswordVisibility() {
+		setIsPasswordVisible((prevState) => !prevState);
+	}
 
 	// States for checking the errors
 	const [submitted, setSubmitted] = useState(false);
@@ -33,8 +36,25 @@ export default function Register() {
 		if (email === '' || password === '') {
 			setError(true);
 		} else {
-			setSubmitted(true);
-			setError(false);
+			// Create an object with the form data
+			const formData = {
+				email: email,
+				password: password
+			};
+
+			// Send the data to the Back-End using Axios
+			axios.post('/api/login', formData)
+				.then(response => {
+					const token = response.data.token;
+					localStorage.setItem('token', token);
+					console.log(localStorage.getItem('token'));
+					setSubmitted(true);
+					setError(false);
+					navigate("/inventories");
+				})
+				.catch(error => {
+					setError(true);
+				});
 		}
 	};
 
@@ -113,17 +133,16 @@ export default function Register() {
             <div className="py-5 text-sm">
               <p>Lupa password? <a href="/" class="no-underline hover:underline">Klik di sini!</a></p>
             </div>  
-
-						<div className="flex justify-center pt-5">
-							<button onClick={handleSubmit} className="text-white w-[50%] border-2 bg-[#2B5579] hover:bg-[#4ba3d3] rounded-full py-2 font-bold "
-									type="submit">
-								Daftar
-							</button>
-						</div>
+				<div className="flex justify-center pt-5">
+					<button onClick={handleSubmit} className="text-white w-[50%] border-2 bg-[#2B5579] hover:bg-[#4ba3d3] rounded-full py-2 font-bold "
+							type="submit">
+						Masuk
+					</button>
+				</div>
             <div className="py-10 text-sm">
-              <p>Belum punya akun? <a href="/register" class="no-underline hover:underline">Daftar di sini!</a></p>
+              <p>Belum punya akun? <a href="/register" class="underline hover:font-medium text-xs">Daftar di sini!</a></p>
             </div>
-					</div>	
+			</div>	
 				</form>
 			</div>		
 		</div>

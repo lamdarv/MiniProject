@@ -1,4 +1,4 @@
-const Post = require("../models/post");
+const Post = require("../models/inventory");
 const Notification = require("../models/Notification");
 
 exports.create = async (req, res) => {
