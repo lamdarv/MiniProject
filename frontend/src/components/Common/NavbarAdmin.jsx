@@ -112,7 +112,7 @@ export default function NavbarAdmin() {
 
   return (
     
-    <nav className="w-1/4 bg-main-blue-2 rounded-tl-0 rounded-tr-[70px] rounded-br-[70px] rounded-bl-0 h-[47rem]">
+    <nav className="fixed w-[20%] bg-main-blue-2 rounded-tl-0 rounded-tr-[70px] rounded-br-[70px] rounded-bl-0 h-[47rem]">
       <div className="flex justify-center">
         <img className='w-[35%] mt-7' src={`${process.env.PUBLIC_URL}/logo_maneasy_2.png`} alt="Icon" />
       </div>

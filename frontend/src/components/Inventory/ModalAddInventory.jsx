@@ -186,7 +186,7 @@ const ModalAddInventory = ({isOpen, onRequestClose}) => {
                     id="deskripsi"
                     placeholder="Describe here..."
                     maxLength="40"
-                    rows="4"
+                    rows="1"
                     value={deskripsi}
                     onChange={(e) => setDeskripsi(e.target.value)}
                     required="true"
