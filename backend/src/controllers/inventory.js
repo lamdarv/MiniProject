@@ -42,7 +42,7 @@ exports.create = async (req, res) => {
 			return res.status(400).json("Error: " + err.message);
 		  }
 		  const url = req.protocol + '://' + req.get('host')
-		  const schema = new Post({
+		  const schema = new Inventory({
 			nama: req.body.nama,
 			deskripsi: req.body.deskripsi,
 			tgl_kepemilikan: req.body.tgl_kepemilikan,
@@ -54,8 +54,8 @@ exports.create = async (req, res) => {
 	
 		  const schemaCreate = await schema.save();
 		  res.json(schemaCreate);
-		  const imageUrl = 'URL_GAMBAR'; 
-		  res.json({ url: imageUrl });
+		//   const imageUrl = 'URL_GAMBAR'; 
+		//   res.json({ url: imageUrl });
 		});
 	  } catch (e) {
 		console.error(e);
