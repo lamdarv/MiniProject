@@ -32,6 +32,7 @@ const ModalAddInventory = ({isOpen, onRequestClose}) => {
     const [tgl_kepemilikan, setTglKepemilikan] = useState("");
     const [status, setStatus] = useState("Tersedia"); // initialize to a default value
     const [peminjam, setPeminjam] = useState([]);
+    const [gambar, setGambar] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState(null);
 
@@ -193,6 +194,21 @@ const ModalAddInventory = ({isOpen, onRequestClose}) => {
                     />
                     <p className="text-gray-500 text-sm ml-1 mt-0">Maximal Character : 40</p>
                   </div>
+
+                  {/* Gambar */}
+                  <div className="mb-6 w-96">
+                    <label className="font-quicksand block font-semibold text-black mb-2" htmlFor="gambar">
+                      Gambar
+                    </label>
+                    <input
+                      type="file"
+                      id="gambar"
+                      accept="image/*"
+                      onChange={(e) => setGambar(e.target.files[0])}
+                      required
+                    />
+                  </div>
+
                 </div>
               </div>
             <div className="flex items-center justify-end">

@@ -96,45 +96,6 @@ const InventoryAdmin = () => {
               </div>
             ) : (
               inventories.map(inventory => (
-<<<<<<< Updated upstream
-                <div key={inventory._id} className="mr-6 ml-6 mt-10 p-6 bg-white rounded-lg shadow-md w-full md:w-3/4">
-                  <table>
-                    <tbody>
-                      <tr>
-                        <td className='font-quicksand font-normal text-lg pr-6'><strong>Nama Inventaris</strong></td>
-                        <td className='font-quicksand font-normal text-lg pr-6'>{inventory.nama}</td>
-                      </tr>
-                      <tr>
-                        <td className='font-quicksand font-normal text-lg pr-6'><strong>Deskripsi</strong></td>
-                        <td className='font-quicksand font-normal text-lg pr-6'>{inventory.deskripsi}</td>
-                      </tr>
-                      <tr>
-                        <td className='font-quicksand font-normal text-lg pr-6'><strong>Tanggal Kepemilikan</strong></td>
-                        <td className='font-quicksand font-normal text-lg pr-6'>{new Date(inventory.tgl_kepemilikan).toLocaleDateString('id-ID')}</td>
-                      </tr>
-                      <tr>
-                        <td className='font-quicksand font-normal text-lg pr-6'><strong>Status</strong></td>
-                        <td className='font-quicksand font-normal text-lg pr-6'>{inventory.status}</td>
-                      </tr>
-                      <tr>
-                        <td className='font-quicksand font-normal text-lg pr-6'><strong>Gambar</strong></td>
-                        <td className='font-quicksand font-normal text-lg pr-6'>
-                          <img src="http://localhost:5001/public/7f18ab59-b8c6-46f4-8ee7-5566cfde47c1-santika.jpg" alt="Gambar Inventaris" />
-                        </td>
-                      </tr>
-                      <tr>
-                        <td className='font-quicksand font-normal text-lg pr-6'><strong>List Peminjam</strong></td>
-                        <td>
-                          <ul className="font-quicksand font-normal text-lg pr-6">
-                            {inventory.list_peminjam.map((peminjam) => (
-                              <li key={peminjam}>{peminjam}</li>
-                            ))}
-                          </ul>
-                        </td>
-                      </tr>
-                    </tbody>
-                  </table>
-=======
                 <div key={inventory._id} className="mr-6 ml-[25%] mb-5 mt-5 p-6 bg-white rounded-lg shadow-md w-full md:w-3/4">
                   <div className='flex'>
                     <div className='w-[200px] flex items-center justify-center'>
@@ -175,7 +136,6 @@ const InventoryAdmin = () => {
 
                     
                   </div>
->>>>>>> Stashed changes
                   <ul className="flex items-center mt-6 justify-center">
                     <li className="rounded-40 bg-custom-green-1 hover:drop-shadow-xl items-center w-28">
                       <Link onClick={() => handleEdit(inventory._id)} data-id={inventory._id} className="font-quicksand font-medium text-white pr-4 pl-4 py-0.5 px-0.5 flex items-center ">
