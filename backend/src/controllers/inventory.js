@@ -42,7 +42,7 @@ exports.create = async (req, res) => {
 			return res.status(400).json("Error: " + err.message);
 		  }
 		  const url = req.protocol + '://' + req.get('host')
-		  const schema = new Post({
+		  const schema = new Inventory({
 			nama: req.body.nama,
 			deskripsi: req.body.deskripsi,
 			tgl_kepemilikan: req.body.tgl_kepemilikan,
@@ -50,6 +50,7 @@ exports.create = async (req, res) => {
 			status: req.body.status,
 			gambar: url + '/public/' + req.file.filename,
 			user: req.user._id, // Menggunakan ID pengguna yang sedang login
+			check:"pending"
 		  });
 	
 		  const schemaCreate = await schema.save();
