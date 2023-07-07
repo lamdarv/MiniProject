@@ -4,7 +4,7 @@ const siteSchema = mongoose.Schema(
 	{	
 		peminjam: {
 			type : String,
-			required: true
+			required: false
 		},
 		nama: {
 			type: String,
@@ -29,7 +29,7 @@ const siteSchema = mongoose.Schema(
 		},
 		check: {
 			type: String,
-			required: true,
+			required: false,
 		},
 		gambar: {
 			type: String,

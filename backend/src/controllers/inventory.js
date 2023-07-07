@@ -55,8 +55,8 @@ exports.create = async (req, res) => {
 	
 		  const schemaCreate = await schema.save();
 		  res.json(schemaCreate);
-		  const imageUrl = 'URL_GAMBAR'; 
-		  res.json({ url: imageUrl });
+		//   const imageUrl = 'URL_GAMBAR'; 
+		//   res.json({ url: imageUrl });
 		});
 	  } catch (e) {
 		console.error(e);
