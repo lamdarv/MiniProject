@@ -62,22 +62,6 @@ exports.create = async (req, res) => {
 		console.error(e);
 		res.status(500).send("error");
 	  }
-    // const schema = new Inventory({
-    //   nama: req.body.nama,
-    //   deskripsi: req.body.deskripsi,
-    //   tgl_kepemilikan: req.body.tgl_kepemilikan,
-    //   list_peminjam: req.body.list_peminjam,
-    //   status: req.body.status,
-	//   gambar: req.body.gambar,
-    //   user: req.user._id, // Menggunakan ID pengguna yang sedang login
-    // });
-    // try {
-    //   const schemaCreate = await schema.save();
-    //   res.json(schemaCreate);
-    // } catch (e) {
-    //   console.error(e);
-    //   res.status(500).send("error");
-    // }
   };
   
   
@@ -195,7 +179,8 @@ exports.update = async (req, res) => {
 			console.log(err);
 			return res.status(400).json("Error: " + err.message);
 		  }
-	
+
+		  const url = req.protocol + '://' + req.get('host')
 		  const schemaUpdate = await Inventory.updateOne(
 			{ _id: req.params.id },
 			{
@@ -204,7 +189,9 @@ exports.update = async (req, res) => {
 			  tgl_kepemilikan: req.body.tgl_kepemilikan,
 			  list_peminjam: req.body.list_peminjam,
 			  status: req.bodystatus,
-			  gambar: req.file ? req.file.filename : undefined,
+			  gambar: url + '/public/' + req.file.filename,
+			  user: req.user._id, // Menggunakan ID pengguna yang sedang login
+			  check: req.user.check
 			}
 		  );
 		  res.json(schemaUpdate);
@@ -213,23 +200,6 @@ exports.update = async (req, res) => {
 		console.error(e);
 		res.status(500).send("error");
 	}
-	// try {
-	// 	const schemaUpdate = await Inventory.updateOne(
-	// 		{ _id: req.params.id },
-	// 		{
-	// 			nama: req.body.nama,
-	// 			deskripsi: req.body.deskripsi,
-	// 			tgl_kepemilikan: req.body.tgl_kepemilikan,
-	// 			list_peminjam: req.body.list_peminjam,
-	// 			status: req.body.status,
-	// 			gambar: req.body.gambar,
-	// 		}
-	// 	);
-	// 	res.json(schemaUpdate);
-	// } catch (e) {
-	// 	console.error(e);
-	// 	res.status(500).send("error");
-	// }
 };
 
 exports.delete = async (req, res) => {
