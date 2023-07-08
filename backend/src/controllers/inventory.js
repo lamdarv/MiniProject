@@ -1,68 +1,70 @@
-	const Inventory = require("../models/inventory");
-	const multer = require("multer");
-	const path = require("path");
-	const { v4: uuidv4 } = require("uuid");
+const Inventory = require("../models/inventory");
+const multer = require("multer");
+const path = require("path");
+const { v4: uuidv4 } = require("uuid");
 
-	const DIR = './public/';
+const DIR = './public/';
 
-	const storage = multer.diskStorage({
-		destination: (req, file, cb) => {
-		cb(null, DIR);
-		},
-		filename: (req, file, cb) => {
-		const fileName = file.originalname.toLowerCase().split(' ').join('-');
-		cb(null, uuidv4() + '-' + fileName);
-		}
-	});
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, DIR);
+  },
+  filename: (req, file, cb) => {
+    const fileName = file.originalname.toLowerCase().split(' ').join('-');
+    cb(null, uuidv4() + '-' + fileName);
+  }
+});
 
-	const upload = multer({
-	storage: storage,
-	fileFilter: (req, file, cb) => {
-		if (
-		file.mimetype == "image/png" ||
-		file.mimetype == "image/jpg" ||
-		file.mimetype == "image/jpeg"
-		) {
-		cb(null, true);
-		} else {
-		cb(null, false);
-		return cb(new Error("Only .png, .jpg and .jpeg format allowed!"));
-		}
-	}
-	});
+const upload = multer({
+  storage: storage,
+  fileFilter: (req, file, cb) => {
+    if (
+      file.mimetype == "image/png" ||
+      file.mimetype == "image/jpg" ||
+      file.mimetype == "image/jpeg"
+    ) {
+      cb(null, true);
+    } else {
+      cb(null, false);
+      return cb(new Error("Only .png, .jpg and .jpeg format allowed!"));
+    }
+  }
+});
 
-	exports.create = async (req, res) => {
-		try {
-			upload.single("gambar")(req, res, async function (err) {
-			if (err instanceof multer.MulterError) {
-				console.log(err);
-				return res.status(400).json("Multer Error: " + err.message);
-			} else if (err) {
-				console.log(err);
-				return res.status(400).json("Error: " + err.message);
-			}
-			const url = req.protocol + '://' + req.get('host')
-			const schema = new Inventory({
-				nama: req.body.nama,
-				deskripsi: req.body.deskripsi,
-				tgl_kepemilikan: req.body.tgl_kepemilikan,
-				list_peminjam: req.body.list_peminjam,
-				status: req.body.status,
-				gambar: url + '/public/' + req.file.filename,
-				user: req.user._id, // Menggunakan ID pengguna yang sedang login
-				check:"pending"
-			});
-		
-			const schemaCreate = await schema.save();
-			res.json(schemaCreate);
-			//   const imageUrl = 'URL_GAMBAR'; 
-			//   res.json({ url: imageUrl });
-			});
-		} catch (e) {
-			console.error(e);
-			res.status(500).send("error");
-		}
-	};
+exports.create = async (req, res) => {
+  try {
+    upload.single("gambar")(req, res, async function (err) {
+      if (err instanceof multer.MulterError) {
+        console.log(err);
+        return res.status(400).json("Multer Error: " + err.message);
+      } else if (err) {
+        console.log(err);
+        return res.status(400).json("Error: " + err.message);
+      }
+      
+      // Setelah upload.single('gambar') dieksekusi, req.file akan tersedia
+      const uploadedFile = req.file;
+
+      const url = req.protocol + '://' + req.get('host')
+      const schema = new Inventory({
+        nama: req.body.nama,
+        deskripsi: req.body.deskripsi,
+        tgl_kepemilikan: req.body.tgl_kepemilikan,
+        list_peminjam: req.body.list_peminjam,
+        status: req.body.status,
+        gambar: url + '/public/' + uploadedFile.filename,
+        user: req.user._id, // Menggunakan ID pengguna yang sedang login
+        check:"pending"
+      });
+  
+      const schemaCreate = await schema.save();
+      res.json(schemaCreate);
+    });
+  } catch (e) {
+    console.error(e);
+    res.status(500).send("error");
+  }
+};
 	
 	
 	exports.approveInventory = async (req, res) => {

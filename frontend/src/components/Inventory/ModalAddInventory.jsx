@@ -32,7 +32,7 @@ const ModalAddInventory = ({isOpen, onRequestClose}) => {
     const [tgl_kepemilikan, setTglKepemilikan] = useState("");
     const [status, setStatus] = useState("Tersedia"); // initialize to a default value
     const [peminjam, setPeminjam] = useState([]);
-    const [gambar, setGambar] = useState([]);
+    const [gambar, setGambar] = useState(null);
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState(null);
 
@@ -53,20 +53,22 @@ const ModalAddInventory = ({isOpen, onRequestClose}) => {
           window.alert('Semua field harus diisi!');
           return;
         }
-        
-        const data = { 
-          nama,
-          deskripsi, 
-          tgl_kepemilikan, 
-          status, 
-          list_peminjam: peminjam.map(p => p.value)
-        };
+
+        const formData = new FormData(); // create FormData object
+        formData.append("gambar", gambar); // append the selected image to FormData
+        formData.append("nama", nama); // append other form data to FormData
+        formData.append("deskripsi", deskripsi);
+        formData.append("tgl_kepemilikan", tgl_kepemilikan);
+        formData.append("status", status);
+        formData.append("list_peminjam", peminjam.map(p => p.value));
+        // formData.append("list_peminjam", JSON.stringify(peminjam.map(p => p.value)));
+
 
         try {
           const token = localStorage.getItem('token');
           axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
           const response = await axios.get(`/api/inventory/?nama=${nama}`);
-          await axios.post('/api/inventory/create', data);
+          await axios.post('/api/inventory/create', formData);
           window.alert('Inventaris berhasil ditambahkan!');
           onRequestClose();
           // navigate('/inventories');
@@ -75,6 +77,11 @@ const ModalAddInventory = ({isOpen, onRequestClose}) => {
           console.error('Error creating note:', error);
         }
     };
+
+    const handleImage = (event) => {
+      const file = event.target.files[0];
+      setGambar(file);
+    };    
 
     //masih statis
     const options = [
@@ -204,7 +211,7 @@ const ModalAddInventory = ({isOpen, onRequestClose}) => {
                       type="file"
                       id="gambar"
                       accept="image/*"
-                      onChange={(e) => setGambar(e.target.files[0])}
+                      onChange={handleImage}
                       required
                     />
                   </div>

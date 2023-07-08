@@ -99,7 +99,7 @@ const InventoryAdmin = () => {
                 <div key={inventory._id} className="mr-6 ml-[25%] mb-5 mt-5 p-6 bg-white rounded-lg shadow-md w-full md:w-3/4">
                   <div className='flex'>
                     <div className='w-[200px] flex items-center justify-center'>
-                      <img src={inventory.gambar} alt="Inventory Image" className='w-[130px]'/>
+                      <img src={inventory.gambar} alt="Inventory Image" className='w-[130px] rounded-md drop-shadow-md'/>
                     </div>
                     <div className=''>
                       <table>
