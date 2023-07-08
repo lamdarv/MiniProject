@@ -99,6 +99,14 @@ const deleteProfile = async (req, res) => {
     }
 }
 
+const getAllUsers = async (req, res) => {
+  try {
+    const users = await Users.find();
+    res.status(200).json({ users });
+  } catch (error) {
+    res.status(400).json({ message: error.message });
+  }
+};
 
 const getUserProfile = async (req, res) => {
     try {
@@ -232,6 +240,7 @@ const userController = {
     updateProfile,
     deleteProfile,
     getUserProfile,
+    getAllUsers,
     getAllUsername,
     findUsersByUsername,
     resetPassword

@@ -18,7 +18,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cors());
 app.use(morgan("dev"));
 app.use("/api", require('./src/routes/index'))
-app.use('/public', express.static(path.join(__dirname, 'public/')));
+app.use('/public', express.static('public'));
 
 app.listen(PORT, () => {
 	console.log("Port run on " + PORT);
