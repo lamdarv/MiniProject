@@ -61,9 +61,11 @@ const ModalAddInventory = ({isOpen, onRequestClose}) => {
         formData.append("deskripsi", deskripsi);
         formData.append("tgl_kepemilikan", tgl_kepemilikan);
         formData.append("status", status);
-        formData.append("list_peminjam", JSON.stringify(peminjam.map(p => p.value)));
-        // formData.append("list_peminjam", peminjam.map(p => p.value));
+        // formData.append("list_peminjam", JSON.stringify(peminjam));
+        formData.append("list_peminjam",(peminjam.map(p => p.label)));
+        // formData.append("list_peminjam", peminjam.map(JSON.stringify(p => p.value)));
         // formData.append("list_peminjam", JSON.stringify(peminjam.map(p => p.value)));
+        // formData.append("list_peminjam", JSON.stringify({ peminjam: peminjam.map(p => p.value) }));
 
 
         try {
@@ -106,6 +108,11 @@ const ModalAddInventory = ({isOpen, onRequestClose}) => {
           value: { nim: user.nim, name: user.name },
           label: `${user.nim} - ${user.name}`,
         }));
+
+        // const peminjamList = responseData.map((user) => ({
+        // value: user.nim, // Store the nim directly as the value
+        //   label: `${user.nim} - ${user.name}`,
+        // }));
 
         setPeminjamOptions(peminjamList);
     
