@@ -29,6 +29,7 @@ const InventoryAdmin = () => {
       const imageUrl = response.data.url;
       setImageUrl(imageUrl);
       setInventories(response.data);
+      console.log(response.data);
     } catch (error) {
       console.log(error);
     }
@@ -83,18 +84,16 @@ const InventoryAdmin = () => {
         <div className="md:container md:mx-auto">
           <div className="flex flex-wrap justify-center">
             {inventories.length === 0 ? (
-              // <p>Inventaris belum tersedia, silakan tambahkan terlebih dahulu.</p>
               <div className="md:container md:mx-auto">
                 <div className="flex justify-center items-center h-screen">
                   <div className="mr-6 ml-[25%] w-[70%] mb-10 bg-white rounded-lg shadow-md p-8">
                     <p className="font-quicksand text-3xl font-bold mb-4 text-center">Inventaris Belum Tersedia!</p>
                     <p className="font-quicksand font-normal text-gray-600 text-lg text-center">Mohon maaf, inventaris belum tersedia. Silakan tambahkan inventaris terlebih dahulu ya!</p>
-                  
                   </div>
                 </div>
               </div>
             ) : (
-              inventories.map(inventory => (
+              inventories.map((inventory) => (
                 <div key={inventory._id} className="mr-6 ml-[25%] mb-5 mt-5 p-6 bg-white rounded-lg shadow-md w-full md:w-3/4">
                   <div className='flex'>
                     <div className='w-[200px] flex items-center justify-center'>
@@ -102,39 +101,36 @@ const InventoryAdmin = () => {
                     </div>
                     <div className=''>
                       <table>
-                          <tbody>
-                            <tr>
-                              <td className='font-quicksand font-normal text-md'><strong>Nama Inventaris</strong></td>
-                              <td className='font-quicksand font-normal text-md'>{inventory.nama}</td>
-                            </tr>
-                            <tr>
-                              <td className='font-quicksand font-normal text-md pr-6'><strong>Deskripsi</strong></td>
-                              <td className='font-quicksand font-normal text-md pr-6'>{inventory.deskripsi}</td>
-                            </tr>
-                            <tr>
-                              <td className='font-quicksand font-normal text-md pr-6'><strong>Tanggal Kepemilikan</strong></td>
-                              <td className='font-quicksand font-normal text-md pr-6'>{new Date(inventory.tgl_kepemilikan).toLocaleDateString('id-ID')}</td>
-                            </tr>
-                            <tr>
-                              <td className='font-quicksand font-normal text-md pr-6'><strong>Status</strong></td>
-                              <td className='font-quicksand font-normal text-md pr-6'>{inventory.status}</td>
-                            </tr>
-                            <tr>
-                              <td className='font-quicksand font-normal text-md pr-6'><strong>List Peminjam</strong></td>
-                              <td>
-                                <ul className="font-quicksand font-normal text-md pr-6">
-                                  {inventory.list_peminjam.map((peminjam) => (
-                                    <li key={peminjam}>{peminjam}</li>
-                                  ))}
-                                </ul>
-                              </td>
-                            </tr>
-
-                          </tbody>
+                        <tbody>
+                          <tr>
+                            <td className='font-quicksand font-normal text-md'><strong>Nama Inventaris</strong></td>
+                            <td className='font-quicksand font-normal text-md'>{inventory.nama}</td>
+                          </tr>
+                          <tr>
+                            <td className='font-quicksand font-normal text-md pr-6'><strong>Deskripsi</strong></td>
+                            <td className='font-quicksand font-normal text-md pr-6'>{inventory.deskripsi}</td>
+                          </tr>
+                          <tr>
+                            <td className='font-quicksand font-normal text-md pr-6'><strong>Tanggal Kepemilikan</strong></td>
+                            <td className='font-quicksand font-normal text-md pr-6'>{new Date(inventory.tgl_kepemilikan).toLocaleDateString('id-ID')}</td>
+                          </tr>
+                          <tr>
+                            <td className='font-quicksand font-normal text-md pr-6'><strong>Status</strong></td>
+                            <td className='font-quicksand font-normal text-md pr-6'>{inventory.status}</td>
+                          </tr>
+                          <tr>
+                            <td className='font-quicksand font-normal text-md pr-6'><strong>List Peminjam</strong></td>
+                            <td>
+                              <ul className="font-quicksand font-normal text-md pr-6">
+                                {inventory.list_peminjam && inventory.list_peminjam.map((peminjam, index) => (
+                                  <div key={index}>{peminjam.nim} - {peminjam.nama}</div>
+                                ))}
+                              </ul>
+                            </td>
+                          </tr>
+                        </tbody>
                       </table>
                     </div>
-
-                    
                   </div>
                   <ul className="flex items-center mt-6 justify-center">
                     <li className="rounded-40 bg-custom-green-1 hover:drop-shadow-xl items-center w-28">
@@ -150,7 +146,7 @@ const InventoryAdmin = () => {
                       </Link>
                     </li>
                   </ul>
-                  {showModal === inventory._id && (
+                  {showModal=== inventory._id && (
                     <ModalDeleteInventory visible={true} onClose={() => setShowModal(null)} inventoryId={inventory._id} handleDeleteInventory={handleDeleteInventory} />
                   )}
                   {showModalUpdate && (
