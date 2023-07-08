@@ -20,7 +20,16 @@ const siteSchema = mongoose.Schema(
 			required: true,
 		},
 		list_peminjam: {
-			type: [String],
+			type: [{
+				nama: {
+					type: String,
+					required: false,
+				},
+				nim: {
+					type: String,
+					required: false,
+				}
+			}],
 			required: false,
 		},
 		status: {

@@ -50,7 +50,7 @@ exports.create = async (req, res) => {
         nama: req.body.nama,
         deskripsi: req.body.deskripsi,
         tgl_kepemilikan: req.body.tgl_kepemilikan,
-        list_peminjam: req.body.list_peminjam,
+        list_peminjam: JSON.parse(req.body.list_peminjam),
         status: req.body.status,
         gambar: url + '/public/' + uploadedFile.filename,
         user: req.user._id, // Menggunakan ID pengguna yang sedang login
