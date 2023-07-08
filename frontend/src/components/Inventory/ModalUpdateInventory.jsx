@@ -67,7 +67,7 @@ const ModalUpdateInventory = ({isOpen, onRequestClose, inventoryId}) => {
         window.alert('Invalid Data!');
         return;
       }
-    
+       
       const data = { 
         nama,
         deskripsi, 

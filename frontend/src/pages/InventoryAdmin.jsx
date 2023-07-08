@@ -28,7 +28,6 @@ const InventoryAdmin = () => {
       });
       const imageUrl = response.data.url;
       setImageUrl(imageUrl);
-
       setInventories(response.data);
     } catch (error) {
       console.log(error);
@@ -87,7 +86,7 @@ const InventoryAdmin = () => {
               // <p>Inventaris belum tersedia, silakan tambahkan terlebih dahulu.</p>
               <div className="md:container md:mx-auto">
                 <div className="flex justify-center items-center h-screen">
-                  <div className="w-[70%] mb-10 bg-white rounded-lg shadow-md p-8">
+                  <div className="mr-6 ml-[25%] w-[70%] mb-10 bg-white rounded-lg shadow-md p-8">
                     <p className="font-quicksand text-3xl font-bold mb-4 text-center">Inventaris Belum Tersedia!</p>
                     <p className="font-quicksand font-normal text-gray-600 text-lg text-center">Mohon maaf, inventaris belum tersedia. Silakan tambahkan inventaris terlebih dahulu ya!</p>
                   

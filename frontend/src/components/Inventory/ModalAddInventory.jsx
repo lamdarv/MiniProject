@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from '../../axiosConfig';
 import { useNavigate } from 'react-router-dom';
 import DatePicker from "react-datepicker";
@@ -35,6 +35,7 @@ const ModalAddInventory = ({isOpen, onRequestClose}) => {
     const [gambar, setGambar] = useState(null);
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState(null);
+    const [peminjamOptions, setPeminjamOptions] = useState([]);
 
     const navigate = useNavigate();
 
@@ -82,6 +83,37 @@ const ModalAddInventory = ({isOpen, onRequestClose}) => {
       const file = event.target.files[0];
       setGambar(file);
     };    
+
+    useEffect(() => {
+      fetchPeminjamList();
+    }, []);
+
+
+    const fetchPeminjamList = async () => {
+      try {
+        const token = localStorage.getItem('token');
+        axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+        const response = await axios.get("/api/user/all/users");
+        const responseData = response.data.users; // Mendapatkan array pengguna dari response
+    
+        // const peminjamList = responseData.map((user) => ({
+        //   name: user.name,
+        //   nim: user.nim,
+        // }));
+
+        const peminjamList = responseData.map((user) => ({
+          value: user.nim,
+          label: `${user.nim} - ${user.name}`,
+        }));
+
+        setPeminjamOptions(peminjamList);
+    
+        console.log(peminjamList); 
+    
+      } catch (error) {
+        console.error("Error fetching users:", error);
+      }
+    };
 
     //masih statis
     const options = [
@@ -173,7 +205,7 @@ const ModalAddInventory = ({isOpen, onRequestClose}) => {
                       List Peminjam
                     </label>
                     <Select
-                      options={options}
+                      options={peminjamOptions}
                       value={peminjam}
                       onChange={setPeminjam}
                       placeholder="Cari atau pilih peminjam"
