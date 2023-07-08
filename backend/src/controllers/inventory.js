@@ -185,6 +185,7 @@ exports.update = async (req, res) => {
 			nama: req.body.nama,
 			deskripsi: req.body.deskripsi,
 			tgl_kepemilikan: req.body.tgl_kepemilikan,
+			// list_peminjam: req.body.list_peminjam,
 			list_peminjam: JSON.parse(req.body.list_peminjam),
 			status: req.bodystatus,
 			gambar: url + '/public/' + req.file.filename,

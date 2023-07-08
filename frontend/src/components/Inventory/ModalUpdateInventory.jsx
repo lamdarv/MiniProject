@@ -56,8 +56,8 @@ const ModalUpdateInventory = ({ isOpen, onRequestClose, inventoryId }) => {
       setStatus(status);
 
       const formattedPeminjam = list_peminjam.map((p) => ({
-        value: { nim: p.nim, name: p.name },
-        label: `${p.nim} - ${p.name}`,
+        value: { nim: p.nim, nama: p.nama },
+        label: `${p.nim} - ${p.nama}`,
       }));
       setPeminjam(formattedPeminjam);
 
@@ -83,7 +83,7 @@ const ModalUpdateInventory = ({ isOpen, onRequestClose, inventoryId }) => {
     if (peminjam && peminjam.length > 0) {
       formattedPeminjam = peminjam.map((p) => ({
         nim: p.value.nim,
-        name: p.value.name,
+        nama: p.value.nama,
       }));
     }
   
@@ -93,11 +93,7 @@ const ModalUpdateInventory = ({ isOpen, onRequestClose, inventoryId }) => {
     formData.append('deskripsi', deskripsi);
     formData.append('tgl_kepemilikan', tgl_kepemilikan);
     formData.append('status', status);
-    // Mengirim formattedPeminjam sebagai array of objects
-    formattedPeminjam.forEach((peminjamObj, index) => {
-      formData.append(`list_peminjam[${index}][nim]`, peminjamObj.nim);
-      formData.append(`list_peminjam[${index}][name]`, peminjamObj.name);
-    });
+    formData.append('list_peminjam', JSON.stringify(formattedPeminjam));
   
     try {
       const token = localStorage.getItem('token');
@@ -125,7 +121,7 @@ const ModalUpdateInventory = ({ isOpen, onRequestClose, inventoryId }) => {
       const responseData = response.data.users;
 
       const peminjamList = responseData.map((user) => ({
-        value: { nim: user.nim, name: user.name },
+        value: { nim: user.nim, nama: user.name },
         label: `${user.nim} - ${user.name}`,
       }));
 
