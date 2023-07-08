@@ -61,7 +61,8 @@ const ModalAddInventory = ({isOpen, onRequestClose}) => {
         formData.append("deskripsi", deskripsi);
         formData.append("tgl_kepemilikan", tgl_kepemilikan);
         formData.append("status", status);
-        formData.append("list_peminjam", peminjam.map(p => p.value));
+        formData.append("list_peminjam", JSON.stringify(peminjam.map(p => p.value)));
+        // formData.append("list_peminjam", peminjam.map(p => p.value));
         // formData.append("list_peminjam", JSON.stringify(peminjam.map(p => p.value)));
 
 
@@ -102,7 +103,7 @@ const ModalAddInventory = ({isOpen, onRequestClose}) => {
         // }));
 
         const peminjamList = responseData.map((user) => ({
-          value: user.nim,
+          value: { nim: user.nim, name: user.name },
           label: `${user.nim} - ${user.name}`,
         }));
 

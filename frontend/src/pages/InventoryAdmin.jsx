@@ -129,6 +129,7 @@ const InventoryAdmin = () => {
                                 </ul>
                               </td>
                             </tr>
+
                           </tbody>
                       </table>
                     </div>
