@@ -35,11 +35,11 @@ const Borrow = () => {
 
   return (
     <div>
-      <nav className="sticky bg-main-blue-3">
-        <li className={`list-none ml-10 rounded-tl-[40px] rounded-tr-[0] rounded-br-0 rounded-bl-[40px] ${isClickedCreate ? 'bg-white' : 'bg-white'} hover:drop-shadow-xl items-center transition duration-500 ease-in-out`}>
-          <Link className="flex items-center py-20 px-5" onClick={handleClickCreate} onMouseEnter={handleMouseOverCreate} onMouseLeave={handleMouseLeaveCreate}>
-            <img src={`${isClickedCreate ? process.env.PUBLIC_URL+'/assets/create_icon.svg' : (isHoveredCreate ? process.env.PUBLIC_URL+'/assets/create_icon.svg' : process.env.PUBLIC_URL+'/assets/create_icon.svg')}`}  alt="Delete_icon" className="w-16 h-10" />
-          </Link>
+      <nav>
+        <li className="rounded-40 bg-main-blue hover:drop-shadow-xl items-center w-28">
+            <Link onClick={handleClickCreate} onMouseEnter={handleMouseOverCreate} onMouseLeave={handleMouseLeaveCreate} className="font-quicksand font-medium text-white py-0.5 px-0.5 flex items-center justify-center">
+                Pinjam
+            </Link>
         </li>
       </nav>
       {showModal && (

@@ -135,11 +135,12 @@ const InventoryMhs = () => {
                     </div>
                   </div>
                   <ul className="flex items-center mt-6 justify-center">
-                    <li className="rounded-40 bg-main-blue hover:drop-shadow-xl items-center w-28">
+                    {/* <li className="rounded-40 bg-main-blue hover:drop-shadow-xl items-center w-28">
                       <Link onClick={() => handleEdit(inventory._id)} data-id={inventory._id} className="font-quicksand font-medium text-white py-0.5 px-0.5 flex items-center justify-center">
                         Pinjam
                       </Link>
-                    </li>
+                    </li> */}
+                    <Borrow />
                   </ul>
                   {showModal=== inventory._id && (
                     <ModalDeleteInventory visible={true} onClose={() => setShowModal(null)} inventoryId={inventory._id} handleDeleteInventory={handleDeleteInventory} />

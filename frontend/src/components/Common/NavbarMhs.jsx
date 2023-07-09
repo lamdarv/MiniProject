@@ -131,7 +131,7 @@ export default function NavbarMhs() {
         <li className={`mb-1 ml-5 rounded-40 ${isClickedDashboard ? 'bg-custom-gradient text-white' : 'text-custom-gray-2 hover:bg-custom-gradient text-white'} hover:drop-shadow-xl items-center`}>  
           <a href="/" id="home" onMouseOver={handleMouseOverDashboard} onMouseLeave={handleMouseLeaveDashboard} onClick={handleClickDashboard} className="font-quicksand font-medium text-sm hover:text-white pr-4 flex items-center "> 
           <img 
-              src={`${isClickedDashboard ? process.env.PUBLIC_URL+'/assets/kelola_mhs_icon_active.svg' : (isHoveredDashboard ? process.env.PUBLIC_URL+'/assets/kelola_mhs_icon_active.svg' : process.env.PUBLIC_URL+'/assets/kelola_mhs_icon.svg')}`} 
+              src={`${isClickedDashboard ? process.env.PUBLIC_URL+'/assets/dashboard_icon_active.svg' : (isHoveredDashboard ? process.env.PUBLIC_URL+'/assets/dashboard_icon_active.svg' : process.env.PUBLIC_URL+'/assets/dashboard_icon.svg')}`} 
               alt="kelola_admin_icon" 
               className="ml-0"
           /> 
