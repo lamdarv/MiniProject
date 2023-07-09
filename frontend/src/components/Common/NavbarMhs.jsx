@@ -1,10 +1,8 @@
 import { useEffect, useState } from 'react';
 
-export default function NavbarAdmin() {
-  // const [isHoveredHome, setIsHoveredHome] = useState(false);
+export default function NavbarMhs() {
   const [isHoveredProfilDKM, setIsHoveredProfilDKM] = useState(false);
-  const [isHoveredAdmin, setIsHoveredAdmin] = useState(false);
-  const [isHoveredMahasiswa, setIsHoveredMahasiswa] = useState(false);   
+  const [isHoveredDashboard, setIsHoveredDashboard] = useState(false);   
   const [isHoveredDKM, setIsHoveredDKM] = useState(false);   
   const [isHoveredInventories, setIsHoveredInventories] = useState(false);  
   const [isHoveredCreate, setIsHoveredCreate] = useState(false);
@@ -13,10 +11,8 @@ export default function NavbarAdmin() {
   const [isHoveredProfile, setIsHoveredProfile] = useState(false);
 
   const [isClickedProfilDKM, setIsClickedProfilDKM] = useState(false);
-  const [isClickedAdmin, setIsClickedAdmin] = useState(false);
-  const [isClickedMahasiswa, setIsClickedMahasiswa] = useState(false);
+  const [isClickedDashboard, setIsClickedDashboard] = useState(false);
   const [isClickedInventories, setIsClickedInventories] = useState(false);
-  const [isClickedCreate, setIsClickedCreate] = useState(false);
   const [isClickedNotif, setIsClickedNotif] = useState(false);
   const [isClickedKeluar, setIsClickedKeluar] = useState(false);
 
@@ -29,22 +25,13 @@ export default function NavbarAdmin() {
     setIsHoveredProfilDKM(false);
   };
 
-  //Admin Hover
-  const handleMouseOverAdmin = () => {
-    setIsHoveredAdmin(true);
+  //Dashboard Hover
+  const handleMouseOverDashboard = () => {
+    setIsHoveredDashboard(true);
   };
 
-  const handleMouseLeaveAdmin = () => {
-    setIsHoveredAdmin(false);
-  };
-
-  //Admin Hover
-  const handleMouseOverMahasiswa = () => {
-    setIsHoveredMahasiswa(true);
-  };
-
-  const handleMouseLeaveMahasiswa = () => {
-    setIsHoveredMahasiswa(false);
+  const handleMouseLeaveDashboard = () => {
+    setIsHoveredDashboard(false);
   };
 
   //Inventory Hover 
@@ -92,14 +79,9 @@ export default function NavbarAdmin() {
     setIsHoveredCreate(false);
   };
 
-  //Admin Clicked
-  const handleClickAdmin = () => {
-    setIsHoveredAdmin(true); 
-  };
-
-  //Mahasiswa Clicked
-  const handleClickMahasiswa = () => {
-    setIsHoveredMahasiswa(true); 
+  //Dashboard Clicked
+  const handleClickDashboard = () => {
+    setIsHoveredDashboard(true); 
   };
 
   //ProfilDKM Clicked
@@ -110,11 +92,6 @@ export default function NavbarAdmin() {
   //Inventories Clicked
   const handleClickInventories = () => {
     setIsClickedInventories(true); 
-  };
-
-  //Create Clicked
-  const handleClickCreate = () => {
-    setIsClickedCreate(true); 
   };
 
   //Notif Clicked
@@ -128,22 +105,22 @@ export default function NavbarAdmin() {
   };
 
   useEffect(() => {
-    if (window.location.pathname === "/profil") {
+    if (window.location.pathname === "/dkm") {
       setIsClickedProfilDKM(true);
-    } else if (window.location.pathname === "/inventories"){
+    } else if (window.location.pathname === "/inventories-mhs"){
       setIsClickedInventories(true);
-    } else if (window.location.pathname === "/create-post"){
-      setIsClickedCreate(true);
-    } else if (window.location.pathname === "/notifikasi"){
+    } else if (window.location.pathname === "/notifikasi-mhs"){
       setIsClickedNotif(true);
     } else if (window.location.pathname === "/keluar"){
       setIsClickedKeluar(true);
+    } else if (window.location.pathname === "/dashboard"){
+        setIsClickedDashboard(true);
     } 
   }, []);
 
   return (
     
-    <nav className="fixed w-[20%] bg-main-blue-2 rounded-tl-0 rounded-tr-[70px] rounded-br-[70px] rounded-bl-0 h-auto">
+    <nav className="fixed w-[20%] bg-main-blue-2 rounded-tl-0 rounded-tr-[70px] rounded-br-[70px] rounded-bl-0 h-[47rem]">
       <div className="flex justify-center">
         <img className='w-[35%] mt-7' src={`${process.env.PUBLIC_URL}/logo_maneasy_2.png`} alt="Icon" />
       </div>
@@ -151,24 +128,14 @@ export default function NavbarAdmin() {
         <span className='font-quicksand font-semibold text-sm text-custom-white-2'>MENU</span>
       </div>
       <ul className="mt-2">
-        <li className={`mb-1 ml-5 rounded-40 ${isClickedAdmin ? 'bg-custom-gradient text-white' : 'text-custom-gray-2 hover:bg-custom-gradient text-white'} hover:drop-shadow-xl items-center`}>  
-          <a href="/" id="home" onMouseOver={handleMouseOverAdmin} onMouseLeave={handleMouseLeaveAdmin} onClick={handleClickAdmin} className="font-quicksand font-medium text-sm hover:text-white pr-4 flex items-center "> 
+        <li className={`mb-1 ml-5 rounded-40 ${isClickedDashboard ? 'bg-custom-gradient text-white' : 'text-custom-gray-2 hover:bg-custom-gradient text-white'} hover:drop-shadow-xl items-center`}>  
+          <a href="/" id="home" onMouseOver={handleMouseOverDashboard} onMouseLeave={handleMouseLeaveDashboard} onClick={handleClickDashboard} className="font-quicksand font-medium text-sm hover:text-white pr-4 flex items-center "> 
           <img 
-              src={`${isClickedAdmin ? process.env.PUBLIC_URL+'/assets/kelola_admin_icon_active.svg' : (isHoveredAdmin ? process.env.PUBLIC_URL+'/assets/kelola_admin_icon_active.svg' : process.env.PUBLIC_URL+'/assets/kelola_admin_icon.svg')}`} 
+              src={`${isClickedDashboard ? process.env.PUBLIC_URL+'/assets/kelola_mhs_icon_active.svg' : (isHoveredDashboard ? process.env.PUBLIC_URL+'/assets/kelola_mhs_icon_active.svg' : process.env.PUBLIC_URL+'/assets/kelola_mhs_icon.svg')}`} 
               alt="kelola_admin_icon" 
               className="ml-0"
           /> 
-          <span className='ml-2'>Kelola Admin</span>
-          </a>
-        </li>
-        <li className={`mb-1 ml-5 rounded-40 ${isClickedMahasiswa ? 'bg-custom-gradient text-white' : 'text-custom-gray-2 hover:bg-custom-gradient text-white'} hover:drop-shadow-xl items-center`}>  
-          <a href="/" id="home" onMouseOver={handleMouseOverMahasiswa} onMouseLeave={handleMouseLeaveMahasiswa} onClick={handleClickMahasiswa} className="font-quicksand font-medium text-sm hover:text-white pr-4 flex items-center "> 
-          <img 
-              src={`${isClickedMahasiswa ? process.env.PUBLIC_URL+'/assets/kelola_mhs_icon_active.svg' : (isHoveredMahasiswa ? process.env.PUBLIC_URL+'/assets/kelola_mhs_icon_active.svg' : process.env.PUBLIC_URL+'/assets/kelola_mhs_icon.svg')}`} 
-              alt="kelola_admin_icon" 
-              className="ml-0"
-          /> 
-          <span className='ml-2'>Kelola Mahasiswa</span>
+          <span className='ml-2'>Dashboard</span>
           </a>
         </li>
         <li className={`mb-1 ml-5 rounded-40 ${isClickedProfilDKM ? 'bg-custom-gradient text-white' : 'text-custom-gray-2 hover:bg-custom-gradient text-white'} hover:drop-shadow-xl items-center`}>  
@@ -178,7 +145,7 @@ export default function NavbarAdmin() {
               alt="kelola_admin_icon" 
               className="ml-0"
           /> 
-          <span className='ml-2'>Profil DKM</span>
+          <span className='ml-2'>Dewan Kemakmuran Masjid</span>
           </a>
         </li>
         <li className={`mt-3 mb-1 ml-5 rounded-40 ${isClickedInventories ? 'bg-custom-gradient text-white' : 'text-custom-gray-2 hover:bg-custom-gradient text-white'} hover:drop-shadow-xl items-center`}>
@@ -220,11 +187,11 @@ export default function NavbarAdmin() {
       <a href="/profile" onMouseOver={handleMouseOverProfile} onMouseLeave={handleMouseLeaveProfile} className=''>
         <div className=' flex bg-white p-3 m-8 rounded-[10px] shadow-md hover:drop-shadow-2xl bg-custom-gray-3'>
           <div className='flex justify-center items-center' id="profile">
-            <img className='w-[45px] ' src={process.env.PUBLIC_URL+'/assets/admin_icon.svg'} alt="" />
+            <img className='w-[45px] ' src={process.env.PUBLIC_URL+'/assets/mhs_icon.svg'} alt="" />
           </div>
           <div className='ml-2 items-center font-quicksand' id="lembaga">
-            <strong>lamdarv19</strong>
-            <p className='text-[13px]'>as Administrator</p>
+            <strong>Si Ganteng</strong>
+            <p className='text-[13px]'>as Student</p>
           </div>
         </div>
       </a>
