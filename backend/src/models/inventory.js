@@ -27,10 +27,6 @@ const siteSchema = mongoose.Schema(
 			type: String,
 			required: true,
 		},
-		check: {
-			type: String,
-			required: false,
-		},
 		gambar: {
 			type: String,
 			required: true,

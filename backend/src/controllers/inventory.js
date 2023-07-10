@@ -50,7 +50,6 @@ exports.create = async (req, res) => {
 			status: req.body.status,
 			gambar: url + '/public/' + req.file.filename,
 			user: req.user._id, // Menggunakan ID pengguna yang sedang login
-			check:"pending"
 		  });
 	
 		  const schemaCreate = await schema.save();
@@ -64,90 +63,7 @@ exports.create = async (req, res) => {
 	  }
   };
   
-  
-  exports.approveInventory = async (req, res) => {
-	try {
-	  const { id } = req.params;
-  
-	  // Cari postingan berdasarkan ID
-	  const inventory = await Inventory.findById(id);
-	  if (!inventory) {
-		return res.status(404).json({ message: 'Inventory not found' });
-	  }
-  
-	  // Set status postingan menjadi "approved"
-	  inventory.check = 'approved';
-	  await inventory.save();
-  
-	  // Buat notifikasi
-	  const notification = new Notification({
-		inventoryId: inventory._id,
-		userId: req.user._id,
-		action: 'approve',
-		timestamp: new Date(),
-	  });
-	  await notification.save();
-  
-	  res.json({ message: 'Inventory approved', inventory });
-	} catch (error) {
-	  console.error(error);
-	  res.status(500).json({ message: 'Error approving post' });
-	}
-  };
-  
-  
 
-  exports.rejectInventory = async (req, res) => {
-	try {
-	  const { id } = req.params;
-  
-	  // Cari postingan berdasarkan ID
-	  const inventory = await Inventory.findById(id);
-	  if (!inventory) {
-		return res.status(404).json({ message: 'Inventory not found' });
-	  }
-  
-	  // Set status postingan menjadi "approved"
-	  inventory.check = 'rejected';
-	  await inventory.save();
-  
-	  // Buat notifikasi
-	  const notification = new Notification({
-		inventoryId: inventory._id,
-		userId: req.user._id,
-		action: 'reject',
-		timestamp: new Date(),
-	  });
-	  await notification.save();
-  
-	  res.json({ message: 'Inventory rejected', post });
-	} catch (error) {
-	  console.error(error);
-	  res.status(500).json({ message: 'Error rejected post' });
-	}
-  };
-  
-  
-
-  exports.getAllApproved = async (req, res) => {
-	try {
-	  const schemaGetAll = await Inventory.find({ check: "approved" });
-	  res.json(schemaGetAll);
-	} catch (e) {
-	  console.error(e);
-	  res.status(500).send("error");
-	}
-  };
-
-  exports.getAllRejected = async (req, res) => {
-	try {
-	  const schemaGetAll = await Inventory.find({ check: "rejected" });
-	  res.json(schemaGetAll);
-	} catch (e) {
-	  console.error(e);
-	  res.status(500).send("error");
-	}
-  };
   
 exports.getAll = async (req, res) => {
 	try {
