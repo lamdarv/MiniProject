@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 
 import NavbarAdmin from '../components/Common/NavbarAdmin';
 import ModalPassword from '../components/Profile/ModalPassword';
@@ -11,27 +11,22 @@ export default function Register() {
     const [username, setUsername] = useState('');
 	const [email, setEmail] = useState('');
 
-    const [submitted, setSubmitted] = useState(false);
 
     const handleName = (e) => {
 		setName(e.target.value);
-		setSubmitted(false);
 	};
 
     const handleNim = (e) => {
 		setNim(e.target.value);
-		setSubmitted(false);
 	};
 
     const handleUsername = (e) => {
 		setUsername(e.target.value);
-		setSubmitted(false);
 	};
 
 	// Handling the email change
 	const handleEmail = (e) => {
 		setEmail(e.target.value);
-		setSubmitted(false);
 	};
 
 	
@@ -40,13 +35,17 @@ export default function Register() {
       <div className="flex min-h-screen">
         <NavbarAdmin />
         <div className="md:container md:mx-auto">
-          <div className="flex flex-wrap justify-center h-screen">
-            <div className="w-[70%] h-[90%] my-10 bg-white rounded-lg shadow-md p-8">
+          <div className="relative flex flex-wrap justify-center h-screen left-36">
+            <div className="w-[50%] h-[90%] my-10 bg-white rounded-lg shadow-md p-8 ">
                 <form >
 					<div className="flex flex-col font-montserrat">
 						{/* Labels and inputs for form data */}
-                        <div className='flex justify-center'>
-                            <img alt='logo' src={"./logo_maneasy.png"} className="object-contain rounded-full h-[200px] w-[200px]"></img>
+                        <div className='flex group justify-center items-center'>
+                            <img alt='logo' src={"./logo_maneasy.png"} className="object-contain rounded-full h-[200px] w-[200px]"/>
+							<div className='flex flex-col justify-center items-center absolute invisible text-gray-500 font-montserrat font-semibold group-hover:visible rounded-full h-[200px] w-[200px] bg-gray-300 opacity-70'>
+								<img src={`${process.env.PUBLIC_URL}/assets/camera1.svg`} alt="cam" />
+								Ubah Profil
+							</div>
                         </div>
 
 						<label className="pt-5 pb-3 text-[#898989]">Nama</label>
