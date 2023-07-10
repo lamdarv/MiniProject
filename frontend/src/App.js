@@ -4,6 +4,7 @@ import Login from './pages/Login';
 import Register from './pages/Register';
 import NavbarAdmin from './components/Common/NavbarAdmin';
 import InventoryAdmin from './pages/InventoryAdmin';
+import Profile from './pages/Profile';
 
 function App() {
   return (
@@ -14,6 +15,7 @@ function App() {
           <Route path="/register" element={<Register/>} />
           <Route path="/test-navbar" element={<NavbarAdmin/>} />
           <Route path="/inventories" element={<InventoryAdmin/>} />
+          <Route path="/profile" element={<Profile/>} />
         </Routes>
       </Router>
     </div>
