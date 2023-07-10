@@ -8,4 +8,9 @@ router.post("/create", inventoryController.create)
 router.patch("/:id", inventoryController.update)
 router.delete("/:id", inventoryController.delete)
 
+router.post('/approve/:id', inventoryController.approveInventory)
+router.post('/reject/:id', inventoryController.rejectInventory)
+router.get('/approve/:check', inventoryController.getAllApproved)
+router.get('/reject/:check', inventoryController.getAllRejected)
+
 module.exports = router

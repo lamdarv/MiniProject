@@ -26,7 +26,7 @@ const customStyles = {
   }
 };
 
-const ModalAddInventory = ({ isOpen, onRequestClose }) => {
+const ModalBorrowInventory = ({ isOpen, onRequestClose }) => {
   const [nama, setNama] = useState("");
   const [deskripsi, setDeskripsi] = useState("");
   const [tgl_kepemilikan, setTglKepemilikan] = useState("");
@@ -230,4 +230,4 @@ const ModalAddInventory = ({ isOpen, onRequestClose }) => {
   );
 };
 
-export default ModalAddInventory;
+export default ModalBorrowInventory;
