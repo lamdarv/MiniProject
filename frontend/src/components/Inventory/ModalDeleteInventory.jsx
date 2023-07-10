@@ -21,7 +21,7 @@ const ModalDeleteInventory = ({ visible, onClose, inventoryId, handleDeleteInven
     if (!visible) return null;
 
     return (
-        <div onClick={handleOnClose} className='fixed inset-0 bg-black bg-opacity-30 backdrop-blur-sm flex justify-center items-center'>
+        <div onClick={handleOnClose} className='fixed z-50 inset-0 bg-black bg-opacity-30 backdrop-blur-sm flex justify-center items-center'>
             <div className="bg-white p-2 rounded w-1/3 pt-8 pl-0 pr-0 pb-0">
                 <h1 className='ml-4 mt-0 font-quicksand font-semibold text-lg'>
                   Delete Inventory

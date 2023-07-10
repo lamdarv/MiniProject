@@ -2,12 +2,14 @@ import axios from '../axiosConfig';
 import { Link } from 'react-router-dom';
 import React, { useState, useEffect } from 'react';
 
-import NavbarAdmin from '../components/Common/NavbarAdmin';
+// import NavbarAdmin from '../components/Common/NavbarAdmin';
 import Add from '../components/Common/Add';
 import ModalDeleteInventory from '../components/Inventory/ModalDeleteInventory';
 import ModalUpdateInventory from '../components/Inventory/ModalUpdateInventory';
+import NavbarMhs from '../components/Common/NavbarMhs';
+import Borrow from '../components/Common/Borrow';
 
-const InventoryAdmin = () => {
+const InventoryMhs = () => {
   const [inventories, setInventories] = useState([]);
   const [showModal, setShowModal] = useState(false);
   const [inventoryId, setInventoryId] = useState(null);
@@ -80,7 +82,7 @@ const InventoryAdmin = () => {
   return (
     <div className='relative bg-main-blue-3'>
       <div className="flex min-h-screen">
-        <NavbarAdmin />
+        <NavbarMhs />
         <div className="md:container md:mx-auto">
           <div className="flex flex-wrap justify-center">
             {inventories.length === 0 ? (
@@ -88,7 +90,7 @@ const InventoryAdmin = () => {
                 <div className="flex justify-center items-center h-screen">
                   <div className="mr-6 ml-[25%] w-[70%] mb-10 bg-white rounded-lg shadow-md p-8">
                     <p className="font-quicksand text-3xl font-bold mb-4 text-center">Inventaris Belum Tersedia!</p>
-                    <p className="font-quicksand font-normal text-gray-600 text-lg text-center">Mohon maaf, inventaris belum tersedia. Silakan tambahkan inventaris terlebih dahulu ya!</p>
+                    <p className="font-quicksand font-normal text-gray-600 text-lg text-center">Mohon maaf, inventaris belum tersedia. Tunggu Admin menambahkan inventaris dulu ya!</p>
                   </div>
                 </div>
               </div>
@@ -133,18 +135,12 @@ const InventoryAdmin = () => {
                     </div>
                   </div>
                   <ul className="flex items-center mt-6 justify-center">
-                    <li className="rounded-40 bg-custom-green-1 hover:drop-shadow-xl items-center w-28">
-                      <Link onClick={() => handleEdit(inventory._id)} data-id={inventory._id} className="font-quicksand font-medium text-white pr-4 pl-4 py-0.5 px-0.5 flex items-center ">
-                        <img src={`${process.env.PUBLIC_URL}/assets/edit_icon.svg`} alt="Edit_icon" className="pr-3 w-7 h-7" />
-                        Edit
+                    {/* <li className="rounded-40 bg-main-blue hover:drop-shadow-xl items-center w-28">
+                      <Link onClick={() => handleEdit(inventory._id)} data-id={inventory._id} className="font-quicksand font-medium text-white py-0.5 px-0.5 flex items-center justify-center">
+                        Pinjam
                       </Link>
-                    </li>
-                    <li className="ml-6 rounded-40 bg-custom-red-1 hover:drop-shadow-xl items-center w-28">
-                      <Link className="font-quicksand font-medium text-white pr-4 pl-4 py-0.5 px-0.5 flex items-center " onClick={() => setShowModal(inventory._id)}>
-                        <img src={`${process.env.PUBLIC_URL}/assets/trash_icon.svg`} alt="Delete_icon" className="pr-3 w-7 h-7" />
-                        Delete
-                      </Link>
-                    </li>
+                    </li> */}
+                    <Borrow />
                   </ul>
                   {showModal=== inventory._id && (
                     <ModalDeleteInventory visible={true} onClose={() => setShowModal(null)} inventoryId={inventory._id} handleDeleteInventory={handleDeleteInventory} />
@@ -157,10 +153,9 @@ const InventoryAdmin = () => {
             )}
           </div>
         </div>
-        <Add />
       </div>
     </div>
   );
 };
 
-export default InventoryAdmin;
+export default InventoryMhs;

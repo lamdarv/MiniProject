@@ -82,6 +82,32 @@ const updateProfile = async (req, res) => {
     }
 }
 
+const deleteProfile = async (req, res) => {
+    try {
+        const userId = req.user.id;
+        const user = await Users.findById(userId);
+
+        if (!user) {
+            return res.status(404).json({ message: "User not found" });
+        }
+
+        await Users.findByIdAndDelete(userId);
+
+        res.status(200).json({ message: "Account deleted successfully" });
+    } catch (error) {
+        res.status(400).json({ message: error.message });
+    }
+}
+
+const getAllUsers = async (req, res) => {
+  try {
+    const users = await Users.find();
+    res.status(200).json({ users });
+  } catch (error) {
+    res.status(400).json({ message: error.message });
+  }
+};
+
 const getUserProfile = async (req, res) => {
     try {
         res.status(200).send(req.user)
@@ -212,7 +238,9 @@ const userController = {
     register,
     login,
     updateProfile,
+    deleteProfile,
     getUserProfile,
+    getAllUsers,
     getAllUsername,
     findUsersByUsername,
     resetPassword

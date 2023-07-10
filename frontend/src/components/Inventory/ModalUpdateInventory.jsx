@@ -10,111 +10,137 @@ import Modal from 'react-modal';
 Modal.setAppElement('#root');
 
 const customStyles = {
-  content : {
-    top                   : '50%',
-    left                  : '50%',
-    right                 : 'auto',
-    bottom                : 'auto',
-    marginRight           : '-50%',
-    transform             : 'translate(-50%, -50%)',
-    width                 : '65%',
-    padding               : '1 rem',
-    border                : 'none',
+  content: {
+    top: '50%',
+    left: '50%',
+    right: 'auto',
+    bottom: 'auto',
+    marginRight: '-50%',
+    transform: 'translate(-50%, -50%)',
+    width: '65%',
+    padding: '1 rem',
+    border: 'none',
   },
-  overlay : {
-    backgroundColor       : 'rgba(0, 0, 0, 0.2)',
-    backdropFilter        : 'blur(5px)',
+  overlay: {
+    backgroundColor: 'rgba(0, 0, 0, 0.2)',
+    backdropFilter: 'blur(5px)',
   }
 };
 
-const ModalUpdateInventory = ({isOpen, onRequestClose, inventoryId}) => {
-    const [nama, setNama] = useState("");
-    const [deskripsi, setDeskripsi] = useState("");
-    const [tgl_kepemilikan, setTglKepemilikan] = useState("");
-    const [status, setStatus] = useState("");
-    const [peminjam, setPeminjam] = useState([]);
-    const navigate = useNavigate();
+const ModalUpdateInventory = ({ isOpen, onRequestClose, inventoryId }) => {
+  const [nama, setNama] = useState('');
+  const [deskripsi, setDeskripsi] = useState('');
+  const [tgl_kepemilikan, setTglKepemilikan] = useState(new Date());
+  const [status, setStatus] = useState('');
+  const [peminjam, setPeminjam] = useState([]);
+  const [gambar, setGambar] = useState(null);
+  const [peminjamOptions, setPeminjamOptions] = useState([]);
 
-    useEffect(() => {
-        getInventoryById();
-    }, [inventoryId]);
+  const navigate = useNavigate();
 
+  useEffect(() => {
+    getInventoryById();
+    fetchPeminjamList();
+  }, [inventoryId]);
 
-    const getInventoryById = async () => {
-      try {
-        const token = localStorage.getItem('token');
-        // Mengatur header dengan token
-        axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+  const getInventoryById = async () => {
+    try {
+      const token = localStorage.getItem('token');
+      axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
 
-        const response = await axios.get(`/api/inventory/${inventoryId}`);
-        setNama(response.data.nama);
-        setDeskripsi(response.data.deskripsi);
-        setTglKepemilikan(new Date(response.data.tgl_kepemilikan)); // use Date constructor to parse the date string
-        setStatus(response.data.status);
-        setPeminjam(response.data.list_peminjam);
-      } catch (error) {
-          console.error('Error fetching inventory:', error);
-      }
-    };
+      const response = await axios.get(`/api/inventory/${inventoryId}`);
+      const { nama, deskripsi, tgl_kepemilikan, status, list_peminjam } = response.data;
+      setNama(nama);
+      setDeskripsi(deskripsi);
+      setTglKepemilikan(new Date(tgl_kepemilikan));
+      setStatus(status);
 
-    const updatePost = async (event) => {
-      event.preventDefault();
-    
-      const specialCharsRegex = /[^\w\s]/gi;
-      const hasSpecialChars = specialCharsRegex.test(nama) || specialCharsRegex.test(deskripsi);
-    
-      if (hasSpecialChars) {
-        window.alert('Invalid Data!');
-        return;
-      }
-    
-      const data = { 
-        nama,
-        deskripsi, 
-        tgl_kepemilikan: tgl_kepemilikan.toISOString(),
-        status, 
-        list_peminjam: peminjam
-      };
-    
-      try {
-        const token = localStorage.getItem('token');
-        axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-        const response = await axios.patch(`/api/inventory/${inventoryId}`, data);
-        window.alert('Inventaris berhasil diupdate!');
-        onRequestClose();
-        // navigate('/inventories');
-        window.location.reload()
-      } catch (error) {
-        console.error('Error updating note:', error);
-      }
-    };
-    
+      const formattedPeminjam = list_peminjam.map((p) => ({
+        value: { nim: p.nim, nama: p.nama },
+        label: `${p.nim} - ${p.nama}`,
+      }));
+      setPeminjam(formattedPeminjam);
 
-    const options = [
-      { value: 'Tidak ada', label: 'Tidak ada'},
-      { value: '201524049 - Lamda Richo Vanjaya Sumaryadi', label: '201524049 - Lamda Richo Vanjaya Sumaryadi' },
-      { value: '201524045 - Fiora Berliana Putri', label: '201524045 - Fiora Berliana Putri' },
-      { value: '201524020 - M Azis T', label: '201524045 - Fiora Berliana Putri' },
-      { value: '201524021 - Diana F', label: '201524045 - Fiora Berliana Putri' },
-      { value: '201524060 - Vani Anjelina Rangkuti', label: '201524060 - Vani Anjelina Rangkuti' },
-      { value: '201524037 - Alvin Mulia Putra', label: '201524037 - Alvin Mulia Putra' },
-      { value: '201524043 - Arief Nur Rachman', label: '201524043 - Arief Nur Rachman' },
-      { value: '201524056 - Novian Afiq', label: '201524056 - Novian Afiq' },
-      { value: '201524048 - Halimatussadiyah', label: '201524048 - Halimatussadiyah' },
-      { value: '201524052 - Muhammad Rifqi Hidayatullah', label: '201524052 - Muhammad Rifqi Hidayatullah' },
-      { value: '201524042 - Satria Akhmad Ihsani', label: '201524042 - Satria Akhmad Ihsani' },
-    ];
-    
+      setGambar(gambar);
+    } catch (error) {
+      console.error('Error fetching inventory:', error);
+    }
+  };
+
   
-    return (
-      <Modal
-        isOpen={isOpen}
-        onRequestClose={onRequestClose}
-        inventoryId={inventoryId}
-        style={customStyles}
-        className="relative inset-0 z-50 overflow-auto "
-      >
-        <div className="bg-white rounded-lg shadow-md">
+  const updatePost = async (event) => {
+    event.preventDefault();
+  
+    const specialCharsRegex = /[^\w\s]/gi;
+    const hasSpecialChars = specialCharsRegex.test(nama) || specialCharsRegex.test(deskripsi);
+  
+    if (hasSpecialChars) {
+      window.alert('Invalid Data!');
+      return;
+    }
+  
+    let formattedPeminjam = [];
+    if (peminjam && peminjam.length > 0) {
+      formattedPeminjam = peminjam.map((p) => ({
+        nim: p.value.nim,
+        nama: p.value.nama,
+      }));
+    }
+  
+    const formData = new FormData();
+    formData.append('gambar', gambar);
+    formData.append('nama', nama);
+    formData.append('deskripsi', deskripsi);
+    formData.append('tgl_kepemilikan', tgl_kepemilikan);
+    formData.append('status', status);
+    formData.append('list_peminjam', JSON.stringify(formattedPeminjam));
+  
+    try {
+      const token = localStorage.getItem('token');
+      axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+      const response = await axios.patch(`/api/inventory/${inventoryId}`, formData);
+      window.alert('Inventaris berhasil diupdate!');
+      onRequestClose();
+      window.location.reload();
+    } catch (error) {
+      console.error('Error updating note:', error);
+    }
+  };
+  
+
+  const handleImage = (event) => {
+    const file = event.target.files[0];
+    setGambar(file);
+  };
+
+  const fetchPeminjamList = async () => {
+    try {
+      const token = localStorage.getItem('token');
+      axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+      const response = await axios.get('/api/user/all/users');
+      const responseData = response.data.users;
+
+      const peminjamList = responseData.map((user) => ({
+        value: { nim: user.nim, nama: user.name },
+        label: `${user.nim} - ${user.name}`,
+      }));
+
+      setPeminjamOptions(peminjamList);
+    } catch (error) {
+      console.error('Error fetching users:', error);
+    }
+  };
+  
+
+  return (
+    <Modal
+      isOpen={isOpen}
+      onRequestClose={onRequestClose}
+      inventoryId={inventoryId}
+      style={customStyles}
+      className="relative inset-0 z-50 overflow-auto "
+    >
+      <div className="bg-white rounded-lg shadow-md">
         <div className="rounded-lg shadow-md p-6">
           <form onSubmit={updatePost} className="">
             <div className='mt-10 mb-10 flex place-content-around'>
@@ -123,17 +149,17 @@ const ModalUpdateInventory = ({isOpen, onRequestClose, inventoryId}) => {
                 {/* Nama Inventaris */}
                 <div className="mb-6 w-96">
                   <label className="font-quicksand block font-semibold text-black mb-2" htmlFor="nama">
-                  Nama Inventaris
+                    Nama Inventaris
                   </label>
                   <input
-                  className="rounded-lg text-sm font-montserrat block w-full bg-white text-gray-700 border border-gray-200 rounded py-3 px-4 mb-1 leading-tight focus:outline-none"
-                  id="nama"
-                  type="text"
-                  maxLength="20"
-                  placeholder="Masukkan data inventaris"
-                  value={nama}
-                  onChange={(e) => setNama(e.target.value)}
-                  required="true"
+                    className="rounded-lg text-sm font-montserrat block w-full bg-white text-gray-700 border border-gray-200 rounded py-3 px-4 mb-1 leading-tight focus:outline-none"
+                    id="nama"
+                    type="text"
+                    maxLength="20"
+                    placeholder="Masukkan data inventaris"
+                    value={nama}
+                    onChange={(e) => setNama(e.target.value)}
+                    required
                   />
                   <p className="text-gray-500 text-sm ml-1 mt-0">Maximal Character : 20</p>
                 </div>
@@ -181,52 +207,63 @@ const ModalUpdateInventory = ({isOpen, onRequestClose, inventoryId}) => {
                     List Peminjam
                   </label>
                   <Select
-                    options={options}
-                    value={peminjam.map((p) => ({ label: p, value: p }))}
-                    onChange={(selectedOptions) => setPeminjam(selectedOptions.map(option => option.value))}
+                    options={peminjamOptions}
+                    value={peminjam}
+                    onChange={setPeminjam}
                     placeholder="Cari atau pilih peminjam"
                     isSearchable={true}
                     isMulti={true}
-                    isRequired={true}
                     className="rounded-lg text-sm font-montserrat block w-full bg-white text-gray-700 border border-gray-200 rounded py-3 px-4 mb-1 leading-tight focus:outline-none"
+                    isRequired={false}
                   />
                 </div>
-
                 {/* Deskripsi */}
                 <div className=" mb-6 w-96">
                   <label className="font-quicksand block font-semibold text-black mb-2" htmlFor="deskripsi">
-                  Deskripsi
+                    Deskripsi
                   </label>
                   <textarea
-                  className="rounded-lg text-sm font-montserrat block w-full bg-white text-gray-700 border border-gray-200 rounded py-3 px-4 mb-1 leading-tight focus:outline-none"
-                  id="deskripsi"
-                  placeholder="Describe here..."
-                  maxLength="40"
-                  rows="4"
-                  value={deskripsi}
-                  onChange={(e) => setDeskripsi(e.target.value)}
-                  required="true"
+                    className="rounded-lg text-sm font-montserrat block w-full bg-white text-gray-700 border border-gray-200 rounded py-3 px-4 mb-1 leading-tight focus:outline-none"
+                    id="deskripsi"
+                    placeholder="Describe here..."
+                    maxLength="40"
+                    rows="1"
+                    value={deskripsi}
+                    onChange={(e) => setDeskripsi(e.target.value)}
+                    required
                   />
                   <p className="text-gray-500 text-sm ml-1 mt-0">Maximal Character : 40</p>
+                </div>
+                <div className="mb-6 w-96">
+                  <label className="font-quicksand block font-semibold text-black mb-2" htmlFor="gambar">
+                    Gambar
+                  </label>
+                  <input
+                    type="file"
+                    id="gambar"
+                    accept="image/*"
+                    onChange={handleImage}
+                    required
+                  />
                 </div>
               </div>
             </div>
             <div className="flex items-center justify-end">
-                <button
-                  className="font-quicksand bg-custom-green-1 hover:bg-custom-green-2 text-white font-bold py-1 px-7 rounded-40 focus:outline-none focus:shadow-outline"
-                  type="submit"
-                >
-                <a>Update</a>
-                </button>
-                <button className="font-quicksand bg-white hover:drop-shadow-xl text-black font-normal py-1 px-7 rounded-[4px] focus:outline-none focus:shadow-outline hover:drop-shadow-xl" onClick={onRequestClose}>
-                 Cancel
-                </button>
+              <button
+                className="font-quicksand bg-custom-green-1 hover:bg-custom-green-2 text-white font-bold py-1 px-7 rounded-40 focus:outline-none focus:shadow-outline"
+                type="submit"
+              >
+                Update
+              </button>
+              <button className="font-quicksand bg-white hover:drop-shadow-xl text-black font-normal py-1 px-7 rounded-[4px] focus:outline-none focus:shadow-outline hover:drop-shadow-xl" onClick={onRequestClose}>
+                Cancel
+              </button>
             </div>
           </form>
         </div>
-        </div>
-      </Modal>
-    );
+      </div>
+    </Modal>
+  );
 };
 
 export default ModalUpdateInventory;
