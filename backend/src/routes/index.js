@@ -8,7 +8,6 @@ router.post('/login', userController.login)
 router.post('/reset-password', userController.resetPassword)
 router.use('/user', verifyToken, require('./user'))
 router.use('/inventory', verifyToken, require('./inventory'))
-
-
+router.use('/peminjaman', verifyToken, require('./peminjaman'))
 
 module.exports = router
