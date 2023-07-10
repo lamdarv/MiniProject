@@ -108,7 +108,7 @@ export default function Register() {
 		<div className="flex flex-col h-screen items-center justify-center bg-[#8ABCD7]">
 			<div className="w-[30%] h-[90%] bg-white rounded-lg shadow-md px-8 pt-5">
                 <div className=" justify-center flex ">
-                    <img src={"./logo_maneasy.png"} className="h-[120px] w-[200px]"></img>
+                    <img alt='logo' src={"./logo_maneasy.png"} className="h-[120px] w-[200px]"></img>
                 </div>
 				<div className='py-5 font-quicksand font-bold text-xl tracking-wide'>
 					<h1>Daftar</h1>
