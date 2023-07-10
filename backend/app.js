@@ -3,7 +3,6 @@ const morgan = require("morgan");
 const cors = require("cors");
 const mongoose = require("mongoose");
 const path = require('path');
-const bodyParser = require('body-parser');
 
 require("dotenv").config();
 
@@ -14,8 +13,6 @@ const mongouri =
 	process.env.MONGO_URI || `mongodb://127.0.0.1:27017/${DBNAME}?ssl=false`;
 mongoose.connect(mongouri);
 
-app.use(bodyParser.urlencoded({ extended: false }));
-app.use(bodyParser.json());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cors());

@@ -25,13 +25,14 @@ const upload = multer({
       cb(null, true);
     } else {
       cb(null, false);
-      return cb(new Error("Only .pdf"));
+      return cb(new Error("Only .pdf format allowed!"));
     }
   }
 });
 
 exports.createPinjam = async (req, res) => {
-  try {
+    console.log(req.body);
+    try {
 
     const { id } = req.params;
     
@@ -41,13 +42,24 @@ exports.createPinjam = async (req, res) => {
       return res.status(404).json({ message: 'not found' });
     }
 
-    // Tambahkan bagian upload file jika diperlukan
-    console.log(req.user)
+    upload.single("file")(req, res, async function (err) {
+        if (err instanceof multer.MulterError) {
+          console.log(err);
+          return res.status(400).json("Multer Error: " + err.message);
+        } else if (err) {
+          console.log(err);
+          return res.status(400).json("Error: " + err.message);
+        } 
+
+    // Peroleh data pengunggahan file dari 'req.file' setelah menggunakan multer
+    const uploadedFile = req.file;
+
+    const url = req.protocol + '://' + req.get('host')
     const pinjam = new Peminjaman({
       nama: req.body.nama,
       tanggal: req.body.tanggal,
       tujuan: req.body.tujuan,
-      file: req.body.file,
+      file: url + '/dokumen/' + uploadedFile.filename,
       inventoryId: inventory,
       userId: req.user._id, // Menggunakan ID pengguna yang sedang login
       check: "pending",
@@ -55,6 +67,7 @@ exports.createPinjam = async (req, res) => {
 
     const schemaPinjam = await pinjam.save();
     res.json(schemaPinjam);
+    });
   } catch (e) {
     console.error(e);
     res.status(500).send("error");

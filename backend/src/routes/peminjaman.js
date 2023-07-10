@@ -1,7 +1,7 @@
+
 const express = require("express")
 const peminjamanController = require('../controllers/peminjaman')
 const router = express.Router()
-
 
 router.get("/:id", peminjamanController.get)
 router.get("/", peminjamanController.getAll)
