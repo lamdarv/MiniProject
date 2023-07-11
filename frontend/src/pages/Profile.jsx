@@ -35,8 +35,8 @@ export default function Register() {
       <div className="flex min-h-screen">
         <NavbarAdmin />
         <div className="md:container md:mx-auto">
-          <div className="relative flex flex-wrap justify-center h-screen left-36">
-            <div className="w-[50%] h-[90%] my-10 bg-white rounded-lg shadow-md p-8 ">
+          <div className="relative flex flex-wrap items-center justify-center h-screen left-36">
+            <div className="w-[50%] h-[90%] bg-white rounded-lg shadow-md p-8 ">
                 <form >
 					<div className="flex flex-col font-montserrat">
 						{/* Labels and inputs for form data */}
