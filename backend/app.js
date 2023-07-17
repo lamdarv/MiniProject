@@ -20,6 +20,10 @@ app.use(morgan("dev"));
 app.use("/api", require('./src/routes/index'))
 app.use('/public', express.static('public'));
 app.use('/dokumen', express.static('dokumen'));
+app.use((req, res, next) => {
+	res.setHeader('Cache-Control', 'no-store');
+	next();
+  });
 
 app.listen(PORT, () => {
 	console.log("Port run on " + PORT);

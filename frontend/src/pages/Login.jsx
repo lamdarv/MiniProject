@@ -30,57 +30,50 @@ export default function Register() {
 		setSubmitted(false);
 	};
 
-	// Handling the form submission
-	const handleSubmit = (e) => {
-		e.preventDefault();
-		if (email === '' || password === '') {
-			setError(true);
-		} else {
-			// Create an object with the form data
-			const formData = {
-				email: email,
-				password: password
-			};
+  // Handling the form submission
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (email === '' || password === '') {
+      setError(true);
+    } else {
+      // Create an object with the form data
+      const formData = {
+        email: email,
+        password: password
+      };
 
-// Send the data to the Back-End using Axios
-axios.post('/api/login', formData)
-	.then(response => {
-		const token = response.data.token;
-		localStorage.setItem('token', token);
-		console.log(localStorage.getItem('token'));
-		setSubmitted(true);
-		setError(false);
+      try {
+        const loginResponse = await axios.post('/api/login', formData);
+        const token = loginResponse.data.token;
+        localStorage.setItem('token', token);
+        console.log(localStorage.getItem('token'));
+        setSubmitted(true);
+        setError(false);
 
-		// Fetch user data to get the role
-		axios.get('/api/user', {
-			headers: {
-				Authorization: `Bearer ${token}`
-			}
-		})
-			.then(userResponse => {
-				const role = userResponse.data.role; // Assuming the role value is returned from the backend
-				localStorage.setItem('role', role); // Store the role in localStorage
-				console.log(localStorage.getItem('role'));
+        const userResponse = await axios.get('/api/user', {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        });
 
-				// Redirect user based on role
-				if (role === 'mahasiswa') {
-					navigate("/inventories-mhs"); // Replace with the actual mahasiswa dashboard route
-				} else if (role === 'admin') {
-					navigate("/inventories"); // Replace with the actual admin dashboard route
-				} else {
-					// Handle unrecognized role
-					// You can redirect to a default page or show an error message
-				}
-			})
-			.catch(userError => {
-				// Handle error while fetching user data
-			});
-	})
-	.catch(error => {
-		setError(true);
-	});
-		}
-	};
+        const role = userResponse.data.role; // Assuming the role value is returned from the backend
+        localStorage.setItem('role', role); // Store the role in localStorage
+        console.log(localStorage.getItem('role'));
+
+        // Redirect user based on role
+        if (role === 'mahasiswa') {
+		window.location.href = '/inventories-mhs';
+        } else if (role === 'admin') {
+		window.location.href = '/inventories';
+        } else {
+          console.log("Unrecognized role");
+        }
+      } catch (error) {
+        setError(true);
+        console.log("Error during login");
+      }
+    }
+  };
 
 	// Showing success message
 	const successMessage = () => {

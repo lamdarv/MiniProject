@@ -12,9 +12,10 @@ const notificationSchema = new mongoose.Schema(
       ref: 'User',
       required: true,
     },
-    action: {
+    check: {
       type: String,
-      required: true,
+      enum: ["pending", "approved", "rejected"],
+      default: "pending",
     },
     timestamp: {
       type: Date,
