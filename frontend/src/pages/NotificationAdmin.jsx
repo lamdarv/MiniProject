@@ -11,13 +11,6 @@ const NotificationAdmin = () => {
   const [notificationAdmin, setNotificationAdmin] = useState([]);
   const [notificationAdminId, setNotificationAdminId] = useState([]);
   
-
-  const [inventories, setInventories] = useState([]);
-  const [showModal, setShowModal] = useState(false);
-  const [inventoryId, setInventoryId] = useState(null);
-  const [showModalUpdate, setShowModalUpdate] = useState(false);
-  const [imageUrl, setImageUrl] = useState('');
-
   useEffect(() => {
     getNotificationAdmin();
   }, []);
@@ -50,8 +43,12 @@ const NotificationAdmin = () => {
       // Membuat URL objek dari blob
       const url = window.URL.createObjectURL(new Blob([response.data]));
       const link = document.createElement('a');
+
+      // Mengambil nama file dari URL
+      const fileName = file.substring(file.lastIndexOf('/') + 1);
+      
       link.href = url;
-      link.setAttribute('download', file);
+      link.setAttribute('download', fileName); // Mengatur nama file yang diinginkan
       document.body.appendChild(link);
       link.click();
 
@@ -120,33 +117,33 @@ const NotificationAdmin = () => {
                 </div>
               </div>
             ) : (
-              notificationAdmin.map((notifAdmin) => (
+              notificationAdmin.reverse().map((notifAdmin) => (
                 <div key={notifAdmin._id} className="mr-6 ml-[25%] mb-5 mt-5 p-6 bg-white rounded-lg shadow-md w-full md:w-3/4">
                   <div className='flex'>
                     <table>
                       <tbody>
                         <tr>
-                          <td className='font-quicksand font-normal text-md'><strong>Nama Penanggung Jawab</strong></td>
+                          <td className='font-quicksand font-normal text-md'><strong>Nama PJ</strong></td>
                           <td className='font-quicksand font-normal text-md'>{notifAdmin.nama}</td>
                         </tr>
                         <tr>
-                          <td className='font-quicksand font-normal text-md pr-6'><strong>Tujuan</strong></td>
-                          <td className='font-quicksand font-normal text-md pr-6'>{notifAdmin.tujuan}</td>
+                          <td className='font-quicksand font-normal text-md pr-14'><strong>Tujuan</strong></td>
+                          <td className='font-quicksand font-normal text-md pr-14'>{notifAdmin.tujuan}</td>
                         </tr>
                         <tr>
-                          <td className='font-quicksand font-normal text-md pr-6'><strong>Tanggal Kepemilikan</strong></td>
-                          <td className='font-quicksand font-normal text-md pr-6'>{new Date(notifAdmin.tgl_kepemilikan).toLocaleDateString('id-ID')}</td>
+                          <td className='font-quicksand font-normal text-md pr-14'><strong>Tanggal Peminjaman</strong></td>
+                          <td className='font-quicksand font-normal text-md pr-14'>{new Date(notifAdmin.tanggal).toLocaleDateString('id-ID')}</td>
                         </tr>
                         <tr>
-                          <td className='font-quicksand font-normal text-md pr-6'><strong>File</strong></td>
-                          <td className='font-quicksand font-normal text-md pr-6'>{notifAdmin.file}</td>
+                          <td className='font-quicksand font-normal text-md pr-14'><strong>File</strong></td>
+                          <td className='font-quicksand font-normal text-md pr-14'>{notifAdmin.file}</td>
                         </tr>
                       </tbody>
                     </table>
                   </div>
                   {/* Tambahkan tombol unduh PDF */}
-                  <button className="font-quicksand bg-main-blue hover:drop-shadow-xl text-white font-normal py-1 px-7 rounded-[4px] focus:outline-none focus:shadow-outline" onClick={() => handleDownloadPDF(notifAdmin.file)}>
-                    Download PDF
+                  <button className="mt-6 font-quicksand bg-main-blue hover:drop-shadow-xl text-white font-normal py-1 px-7 rounded-[4px] focus:outline-none focus:shadow-outline" onClick={() => handleDownloadPDF(notifAdmin.file)}>
+                    <span>Download PDF</span>
                   </button>
                   {/* <ul className="flex items-center mt-6 justify-center">
                     <li className="rounded-40 bg-custom-green-1 hover:drop-shadow-xl items-center w-28">
@@ -173,7 +170,6 @@ const NotificationAdmin = () => {
             )}
           </div>
         </div>
-        <Add />
       </div>
     </div>
   );
