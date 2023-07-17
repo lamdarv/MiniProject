@@ -28,14 +28,18 @@ const customStyles = {
 
 const ModalBorrowInventory = ({ isOpen, onRequestClose }) => {
   const [nama, setNama] = useState("");
-  const [deskripsi, setDeskripsi] = useState("");
   const [tgl_kepemilikan, setTglKepemilikan] = useState("");
+  const [deskripsi, setDeskripsi] = useState("");
+  const [tujuan, setTujuan] = useState("");
   const [status, setStatus] = useState("Tersedia");
   const [peminjam, setPeminjam] = useState([]);
   const [gambar, setGambar] = useState(null);
+  const [file, setFile] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
   const [peminjamOptions, setPeminjamOptions] = useState([]);
+
+  
 
   const navigate = useNavigate();
 
@@ -117,6 +121,9 @@ const ModalBorrowInventory = ({ isOpen, onRequestClose }) => {
       <div className="bg-white rounded-lg shadow-md ">
         <div className="rounded-lg shadow-md p-6 ">
           <form onSubmit={handleSubmit} className="">
+            <div className="top">
+              <h2 className='ml-3 pl-3 font-bold text-xl'>Ajukan Peminjaman</h2>
+            </div>
             <div className='mt-10 mb-10 flex place-content-around'>
               <div className="left">
                 <div className="mb-6 w-96">
@@ -217,10 +224,10 @@ const ModalBorrowInventory = ({ isOpen, onRequestClose }) => {
             </div>
             <div className="flex items-center justify-end">
               <button className="mr-3 font-quicksand bg-main-blue hover:drop-shadow-xl text-white font-normal py-1 px-7 rounded-[4px] focus:outline-none focus:shadow-outline">
-                Tambah
+                Ajukan
               </button>
               <button className="font-quicksand bg-white hover:drop-shadow-xl text-black font-normal py-1 px-7 rounded-[4px] focus:outline-none focus:shadow-outline hover:drop-shadow-xl" onClick={onRequestClose}>
-                Cancel
+                Gak Jadi
               </button>
             </div>
           </form>

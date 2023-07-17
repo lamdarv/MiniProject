@@ -4,8 +4,8 @@ import React, { useState, useEffect } from 'react';
 
 // import NavbarAdmin from '../components/Common/NavbarAdmin';
 import Add from '../components/Common/Add';
-import ModalDeleteInventory from '../components/Inventory/ModalDeleteInventory';
-import ModalUpdateInventory from '../components/Inventory/ModalUpdateInventory';
+// import ModalDeleteInventory from '../components/Inventory/ModalDeleteInventory';
+// import ModalUpdateInventory from '../components/Inventory/ModalUpdateInventory';
 import NavbarMhs from '../components/Common/NavbarMhs';
 import Borrow from '../components/Common/Borrow';
 
@@ -142,12 +142,12 @@ const InventoryMhs = () => {
                     </li> */}
                     <Borrow />
                   </ul>
-                  {showModal=== inventory._id && (
+                  {/* {showModal=== inventory._id && (
                     <ModalDeleteInventory visible={true} onClose={() => setShowModal(null)} inventoryId={inventory._id} handleDeleteInventory={handleDeleteInventory} />
                   )}
                   {showModalUpdate && (
                     <ModalUpdateInventory isOpen={true} onRequestClose={handleModalUpdateClose} inventoryId={inventoryId} className="" />
-                  )}
+                  )} */}
                 </div>
               ))
             )}

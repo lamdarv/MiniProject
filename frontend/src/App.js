@@ -14,7 +14,6 @@ function App() {
         <Routes>
           <Route path="/" element={<Login/>} />
           <Route path="/register" element={<Register/>} />
-          <Route path="/test-navbar" element={<NavbarAdmin/>} />
           <Route path="/inventories" element={<InventoryAdmin/>} />
           <Route path="/profile" element={<Profile/>} />
           <Route path="/inventories-mhs" element={<InventoryMhs/>} />
