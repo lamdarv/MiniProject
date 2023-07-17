@@ -1,19 +1,13 @@
 import axios from '../axiosConfig';
 import { Link } from 'react-router-dom';
 import React, { useState, useEffect } from 'react';
-
-// import NavbarAdmin from '../components/Common/NavbarAdmin';
-import Add from '../components/Common/Add';
-// import ModalDeleteInventory from '../components/Inventory/ModalDeleteInventory';
-// import ModalUpdateInventory from '../components/Inventory/ModalUpdateInventory';
 import NavbarMhs from '../components/Common/NavbarMhs';
-import Borrow from '../components/Common/Borrow';
+import ModalBorrowInventory from '../components/Inventory/ModalBorrowInventory';
 
 const InventoryMhs = () => {
   const [inventories, setInventories] = useState([]);
-  const [showModal, setShowModal] = useState(false);
+  const [showModalPinjam, setShowModalPinjam] = useState(false);
   const [inventoryId, setInventoryId] = useState(null);
-  const [showModalUpdate, setShowModalUpdate] = useState(false);
   const [imageUrl, setImageUrl] = useState('');
 
   useEffect(() => {
@@ -37,47 +31,15 @@ const InventoryMhs = () => {
     }
   };
 
-  const deleteInventory = async (id) => {
-    try {
-      const token = localStorage.getItem('token');
-      await axios.delete(`/api/inventory/${id}`, {
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
-      });
-      window.alert("Inventaris berhasil dihapus!");
-      getInventories();
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  const handleDeleteInventory = async (id) => {
-    try {
-      await deleteInventory(id);
-      setInventoryId(id);
-      getInventories();
-      setShowModal(true);
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  const handleEdit = (id) => {
+  const handlePinjam = (id) => {
     setInventoryId(id);
-    setShowModalUpdate(true);
+    setShowModalPinjam(true);
   };
 
-  const handleModalUpdateClose = () => {
-    setShowModalUpdate(false);
+  const handleModalClose = () => {
+    setShowModalPinjam(false);
     document.body.classList.remove('overflow-hidden');
-  };
-
-  const handleModalUpdateOpen = (e) => {
-    const inventoryId = e.target.dataset.id;
-    setShowModalUpdate(true);
-    document.body.classList.add('overflow-hidden');
-  };
+  }
 
   return (
     <div className='relative bg-main-blue-3'>
@@ -135,19 +97,15 @@ const InventoryMhs = () => {
                     </div>
                   </div>
                   <ul className="flex items-center mt-6 justify-center">
-                    {/* <li className="rounded-40 bg-main-blue hover:drop-shadow-xl items-center w-28">
-                      <Link onClick={() => handleEdit(inventory._id)} data-id={inventory._id} className="font-quicksand font-medium text-white py-0.5 px-0.5 flex items-center justify-center">
+                    <li className="rounded-40 bg-main-blue hover:drop-shadow-xl items-center w-28">
+                      <Link onClick={() => handlePinjam(inventory._id)} data-id={inventory._id} className="font-quicksand font-medium text-white py-0.5 px-0.5 flex items-center justify-center">
                         Pinjam
                       </Link>
-                    </li> */}
-                    <Borrow />
+                    </li>
                   </ul>
-                  {/* {showModal=== inventory._id && (
-                    <ModalDeleteInventory visible={true} onClose={() => setShowModal(null)} inventoryId={inventory._id} handleDeleteInventory={handleDeleteInventory} />
+                  {showModalPinjam && (
+                    <ModalBorrowInventory isOpen={true} onRequestClose={handleModalClose} inventoryId={inventoryId} className="" />
                   )}
-                  {showModalUpdate && (
-                    <ModalUpdateInventory isOpen={true} onRequestClose={handleModalUpdateClose} inventoryId={inventoryId} className="" />
-                  )} */}
                 </div>
               ))
             )}

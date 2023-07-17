@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from '../../axiosConfig';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import Select from 'react-select';
@@ -26,54 +26,59 @@ const customStyles = {
   }
 };
 
-const ModalBorrowInventory = ({ isOpen, onRequestClose }) => {
+const ModalBorrowInventory = ({ isOpen, onRequestClose, inventoryId }) => {
   const [nama, setNama] = useState("");
-  const [tgl_kepemilikan, setTglKepemilikan] = useState("");
-  const [deskripsi, setDeskripsi] = useState("");
+  const [tanggal, setTanggal] = useState(new Date());
   const [tujuan, setTujuan] = useState("");
-  const [status, setStatus] = useState("Tersedia");
-  const [peminjam, setPeminjam] = useState([]);
-  const [gambar, setGambar] = useState(null);
   const [file, setFile] = useState(null);
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState(null);
-  const [peminjamOptions, setPeminjamOptions] = useState([]);
-
-  
+  const [check, setCheck] = useState("pending");
 
   const navigate = useNavigate();
 
-  const handleSubmit = async (event) => {
+  useEffect(() => {
+    getInventoryById();
+  }, [inventoryId]);
+
+  const getInventoryById = async () => {
+    try {
+      const token = localStorage.getItem('token');
+      axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+      const response = await axios.get(`/api/inventory/${inventoryId}`);
+      
+    } catch (error) {
+      console.error('Error fetching inventory:', error);
+    }
+  };
+  
+  const handlePinjam = async (event) => {
     event.preventDefault();
 
     const specialCharsRegex = /[^\w\s]/gi;
-    const hasSpecialChars = specialCharsRegex.test(nama) || specialCharsRegex.test(deskripsi);
+    const hasSpecialChars = specialCharsRegex.test(nama) || specialCharsRegex.test(tujuan);
 
     if (hasSpecialChars) {
       window.alert('Invalid Data!');
       return;
     }
 
-    if (!nama || !deskripsi || !tgl_kepemilikan || !status || !peminjam) {
+    if (!nama || !tanggal || !tujuan || !file) {
       window.alert('Semua field harus diisi!');
       return;
     }
 
-    const formattedPeminjam = peminjam.map(p => ({ nim: p.value.nim, nama: p.value.name }));
-
     const formData = new FormData();
-    formData.append("gambar", gambar);
+    formData.append("file", file);
     formData.append("nama", nama);
-    formData.append("deskripsi", deskripsi);
-    formData.append("tgl_kepemilikan", tgl_kepemilikan);
-    formData.append("status", status);
-    formData.append("list_peminjam", JSON.stringify(formattedPeminjam));
+    formData.append("tujuan", tujuan);
+    formData.append("tanggal", tanggal);
+    formData.append("check", check);
+    formData.append("inventoryId", inventoryId);
 
     try {
       const token = localStorage.getItem('token');
       axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-      await axios.post('/api/inventory/create', formData);
-      window.alert('Inventaris berhasil ditambahkan!');
+      await axios.post(`api/peminjaman/pinjam/${inventoryId}`, formData);
+      window.alert('Peminjaman Inventaris berhasil diproses!');
       onRequestClose();
       window.location.reload();
     } catch (error) {
@@ -81,35 +86,11 @@ const ModalBorrowInventory = ({ isOpen, onRequestClose }) => {
     }
   };
 
-  const handleImage = (event) => {
+  const handleFile = (event) => {
     const file = event.target.files[0];
-    setGambar(file);
+    setFile(file);
   };
-
-  useEffect(() => {
-    fetchPeminjamList();
-  }, []);
-
-  const fetchPeminjamList = async () => {
-    try {
-      const token = localStorage.getItem('token');
-      axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-      const response = await axios.get("/api/user/all/users");
-      const responseData = response.data.users;
-
-      const peminjamList = responseData.map((user) => ({
-        value: { nim: user.nim, name: user.name },
-        label: `${user.nim} - ${user.name}`,
-      }));
-
-      setPeminjamOptions(peminjamList);
-
-      console.log(peminjamList);
-
-    } catch (error) {
-      console.error("Error fetching users:", error);
-    }
-  };
+  
 
   return (
     <Modal
@@ -120,7 +101,7 @@ const ModalBorrowInventory = ({ isOpen, onRequestClose }) => {
     >
       <div className="bg-white rounded-lg shadow-md ">
         <div className="rounded-lg shadow-md p-6 ">
-          <form onSubmit={handleSubmit} className="">
+          <form onSubmit={handlePinjam} className="">
             <div className="top">
               <h2 className='ml-3 pl-3 font-bold text-xl'>Ajukan Peminjaman</h2>
             </div>
@@ -128,14 +109,14 @@ const ModalBorrowInventory = ({ isOpen, onRequestClose }) => {
               <div className="left">
                 <div className="mb-6 w-96">
                   <label className="font-quicksand block font-semibold text-black mb-2" htmlFor="nama">
-                    Nama Inventaris
+                    Nama Penanggung Jawab
                   </label>
                   <input
                     className="rounded-lg text-sm font-montserrat block w-full bg-white text-gray-700 border border-gray-200 rounded py-3 px-4 mb-1 leading-tight focus:outline-none"
                     id="nama"
                     type="text"
                     maxLength="20"
-                    placeholder="Masukkan data inventaris"
+                    placeholder="Masukkan nama penanggung jawabnya"
                     value={nama}
                     onChange={(e) => setNama(e.target.value)}
                     required="true"
@@ -145,81 +126,56 @@ const ModalBorrowInventory = ({ isOpen, onRequestClose }) => {
                 <div className="mb-6 relative w-full">
                   <label
                     className="font-quicksand block font-semibold text-black mb-2"
-                    htmlFor="tgl_kepemilikan"
+                    htmlFor="tanggal"
                   >
-                    Tanggal Kepemilikan
+                    Tanggal 
                   </label>
                   <DatePicker
-                    selected={tgl_kepemilikan}
-                    onChange={(date) => setTglKepemilikan(date)}
+                    selected={tanggal}
+                    onChange={(date) => setTanggal(date)}
                     className="rounded-lg text-sm font-montserrat block w-full bg-white text-gray-700 border border-gray-200 rounded py-3 px-4 mb-1 leading-tight focus:outline-none"
-                    id="tgl_kepemilikan"
+                    id="tanggal"
                     dateFormat="dd/MM/yyyy"
-                    placeholderText="Masukkan tanggal kepemilikan"
+                    placeholderText="Masukkan tanggal pinjam"
                     required
                     showPopperArrow={false}
                   />
                 </div>
-                <div className="mb-6 w-96">
-                  <label className="font-quicksand block font-semibold text-black mb-2" htmlFor="status">
-                    Status Ketersediaan
-                  </label>
-                  <select
-                    id="status"
-                    className="rounded-lg text-sm font-montserrat block w-full bg-white text-gray-700 border border-gray-200 rounded py-3 px-4 mb-1 leading-tight focus:outline-none"
-                    value={status}
-                    onChange={(e) => setStatus(e.target.value)}
-                    required
-                  >
-                    <option value="Tersedia">Tersedia</option>
-                    <option value="Tidak Tersedia">Tidak Tersedia</option>
-                  </select>
-                </div>
               </div>
               <div className="ml-6 right overflow-hidden">
-                <div className="mb-6 w-96">
-                  <label className="font-quicksand block font-semibold text-black mb-2" htmlFor="status">
-                    List Peminjam
-                  </label>
-                  <Select
-                    options={peminjamOptions}
-                    value={peminjam}
-                    onChange={setPeminjam}
-                    placeholder="Cari atau pilih peminjam"
-                    isSearchable={true}
-                    isMulti={true}
-                    className="rounded-lg text-sm font-montserrat block w-full bg-white text-gray-700 border border-gray-200 rounded py-3 px-4 mb-1 leading-tight focus:outline-none"
-                    isRequired={false}
-                  />
-                </div>
                 <div className=" mb-6 w-96">
-                  <label className="font-quicksand block font-semibold text-black mb-2" htmlFor="deskripsi">
-                    Deskripsi
+                  <label className="font-quicksand block font-semibold text-black mb-2" htmlFor="tujuan">
+                    Tujuan
                   </label>
                   <textarea
                     className="rounded-lg text-sm font-montserrat block w-full bg-white text-gray-700 border border-gray-200 rounded py-3 px-4 mb-1 leading-tight focus:outline-none"
-                    id="deskripsi"
-                    placeholder="Describe here..."
+                    id="tujuan"
+                    placeholder="Masukkan tujuan peminjaman"
                     maxLength="40"
                     rows="1"
-                    value={deskripsi}
-                    onChange={(e) => setDeskripsi(e.target.value)}
+                    value={tujuan}
+                    onChange={(e) => setTujuan(e.target.value)}
                     required="true"
                   />
                   <p className="text-gray-500 text-sm ml-1 mt-0">Maximal Character : 40</p>
                 </div>
                 <div className="mb-6 w-96">
                   <label className="font-quicksand block font-semibold text-black mb-2" htmlFor="gambar">
-                    Gambar
+                    File
                   </label>
                   <input
                     type="file"
-                    id="gambar"
-                    accept="image/*"
-                    onChange={handleImage}
+                    id="file"
+                    accept="application/pdf"
+                    onChange={handleFile}
                     required
                   />
                 </div>
+                <input
+                    type="hidden"
+                    id="inventoryId"
+                    value={inventoryId}
+                  />
               </div>
             </div>
             <div className="flex items-center justify-end">
