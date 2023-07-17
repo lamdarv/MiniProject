@@ -6,6 +6,7 @@ import NavbarAdmin from './components/Common/NavbarAdmin';
 import InventoryAdmin from './pages/InventoryAdmin';
 import Profile from './pages/Profile';
 import InventoryMhs from './pages/InventoryMhs';
+import NotificationAdmin from './pages/NotificationAdmin';
 
 
 
@@ -19,6 +20,7 @@ function App() {
           <Route path="/inventories" element={localStorage.getItem('role') === 'admin' ? <InventoryAdmin /> : <Navigate to="/inventories" />} />
           <Route path="/profile" element={<Profile/>} />
           <Route path="/inventories-mhs" element={localStorage.getItem('role') === 'mahasiswa' ? <InventoryMhs /> : <Navigate to="/inventories-mhs" />} />
+          <Route path="/notification-admin" element={<NotificationAdmin/>} />
         </Routes>
       </Router>
     </div>

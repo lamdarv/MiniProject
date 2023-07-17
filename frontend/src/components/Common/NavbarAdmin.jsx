@@ -134,7 +134,7 @@ export default function NavbarAdmin() {
       setIsClickedInventories(true);
     } else if (window.location.pathname === "/create-post"){
       setIsClickedCreate(true);
-    } else if (window.location.pathname === "/notifikasi"){
+    } else if (window.location.pathname === "/notification-admin"){
       setIsClickedNotif(true);
     } else if (window.location.pathname === "/keluar"){
       setIsClickedKeluar(true);
@@ -197,7 +197,7 @@ export default function NavbarAdmin() {
       </div>
       <ul className="mt-2">
         <li className={`mb-1 ml-5 rounded-40 ${isClickedNotif ? 'bg-custom-gradient text-white' : 'text-custom-gray-2 hover:bg-custom-gradient text-white'} hover:drop-shadow-xl items-center`}>  
-          <a href="/notifikasi" id="home" onMouseOver={handleMouseOverNotif} onMouseLeave={handleMouseLeaveNotif} onClick={handleClickNotif} className="font-quicksand font-medium text-sm hover:text-white pr-4 flex items-center "> 
+          <a href="/notification-admin" id="home" onMouseOver={handleMouseOverNotif} onMouseLeave={handleMouseLeaveNotif} onClick={handleClickNotif} className="font-quicksand font-medium text-sm hover:text-white pr-4 flex items-center "> 
           <img 
               src={`${isClickedNotif ? process.env.PUBLIC_URL+'/assets/notification_icon_active.svg' : (isHoveredNotif ? process.env.PUBLIC_URL+'/assets/notification_icon_active.svg' : process.env.PUBLIC_URL+'/assets/notification_icon.svg')}`} 
               alt="Activity_icon" 
