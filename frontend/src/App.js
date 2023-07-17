@@ -1,4 +1,4 @@
-import {BrowserRouter as Router, Routes, Route} from 'react-router-dom';
+import {BrowserRouter as Router, Routes, Route, Navigate} from 'react-router-dom';
 import './App.css';
 import Login from './pages/Login';
 import Register from './pages/Register';
@@ -6,6 +6,8 @@ import NavbarAdmin from './components/Common/NavbarAdmin';
 import InventoryAdmin from './pages/InventoryAdmin';
 import Profile from './pages/Profile';
 import InventoryMhs from './pages/InventoryMhs';
+
+
 
 function App() {
   return (
@@ -16,7 +18,7 @@ function App() {
           <Route path="/register" element={<Register/>} />
           <Route path="/inventories" element={<InventoryAdmin/>} />
           <Route path="/profile" element={<Profile/>} />
-          <Route path="/inventories-mhs" element={<InventoryMhs/>} />
+          <Route path="/inventories-mhs" element={localStorage.getItem('role') === 'mahasiswa' ? <InventoryMhs /> : <Navigate to="/" />} />
         </Routes>
       </Router>
     </div>
