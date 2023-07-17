@@ -19,6 +19,7 @@ app.use(cors());
 app.use(morgan("dev"));
 app.use("/api", require('./src/routes/index'))
 app.use('/public', express.static('public'));
+app.use('/dokumen', express.static('dokumen'));
 
 app.listen(PORT, () => {
 	console.log("Port run on " + PORT);
