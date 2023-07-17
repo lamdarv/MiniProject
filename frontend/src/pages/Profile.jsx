@@ -1,16 +1,39 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import axios from '../axiosConfig';
 
 import NavbarAdmin from '../components/Common/NavbarAdmin';
 import ModalPassword from '../components/Profile/ModalPassword';
 
-export default function Register() {
+export default function Profile() {
 
 	// States for registration
 	const [name, setName] = useState('');
     const [nim, setNim] = useState('');
     const [username, setUsername] = useState('');
 	const [email, setEmail] = useState('');
-
+	
+	useEffect(() => {
+		getUser();
+	  }, []);
+	
+	const getUser = async () => {
+		try {
+		  const token = localStorage.getItem('token');
+		  const response = await axios.get("/api/user", {
+			headers: {
+			  Authorization: `Bearer ${token}`
+			}
+		  });
+		  const data = response.data;
+		  // Update the state with the fetched user data
+		  setName(data.name);
+		  setNim(data.nim);
+		  setUsername(data.username);
+		  setEmail(data.email);
+		} catch (error) {
+		  console.log('Error fetching user data:', error);
+		}
+	};
 
     const handleName = (e) => {
 		setName(e.target.value);
