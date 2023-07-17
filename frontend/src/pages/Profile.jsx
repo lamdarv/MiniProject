@@ -35,6 +35,29 @@ export default function Profile() {
 		}
 	};
 
+	useEffect(() => {
+		updateUser();
+	  }, [name, nim, username, email]);
+	
+	  const updateUser = async () => {
+		try {
+		  const token = localStorage.getItem('token');
+		  await axios.patch('/api/user', {
+			name,
+			nim,
+			username,
+			email,
+		  }, {
+			headers: {
+			  Authorization: `Bearer ${token}`,
+			},
+		  });
+		  console.log('User updated successfully');
+		} catch (error) {
+		  console.error('Error updating user:', error);
+		}
+	  };
+
     const handleName = (e) => {
 		setName(e.target.value);
 	};
