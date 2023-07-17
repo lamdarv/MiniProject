@@ -11,8 +11,8 @@ const storage = multer.diskStorage({
 	  cb(null, DIR);
 	},
 	filename: (req, file, cb) => {
-	  const fileName = file.originalname.toLowerCase().split(' ').join('-');
-	  cb(null, uuidv4() + '-' + fileName);
+	  const fileName = file.originalname.split(' ').join(' ');
+	  cb(null, fileName);
 	}
   });
 
@@ -73,95 +73,87 @@ exports.createPinjam = async (req, res) => {
     res.status(500).send("error");
   }
 };
+  
+exports.approvePeminjaman = async (req, res) => {
+try {
+	const { id } = req.params;
 
-  
-  
-  
-  
-  exports.approvePeminjaman = async (req, res) => {
-	try {
-	  const { id } = req.params;
-  
-	  // Cari postingan berdasarkan ID
-	  const peminjaman = await Peminjaman.findById(id);
-	  if (!peminjaman) {
-		return res.status(404).json({ message: 'not found' });
-	  }
-  
-	  // Set status postingan menjadi "approved"
-	  peminjaman.check = 'approved';
-	  await peminjaman.save();
-  
-	  // Buat notifikasi
-	  const notification = new Notification({
-		peminjamanId: peminjaman._id,
-		userId: req.user._id,
-		action: 'approve',
-		timestamp: new Date(),
-	  });
-	  await notification.save();
-  
-	  res.json({ message: 'Peminjaman approved', inventory });
-	} catch (error) {
-	  console.error(error);
-	  res.status(500).json({ message: 'Error approving post' });
+	// Cari postingan berdasarkan ID
+	const peminjaman = await Peminjaman.findById(id);
+	if (!peminjaman) {
+	return res.status(404).json({ message: 'not found' });
 	}
-  };
-  
-  
 
-  exports.rejectPeminjaman = async (req, res) => {
-	try {
-	  const { id } = req.params;
-  
-	  // Cari postingan berdasarkan ID
-	  const peminjaman = await Peminjaman.findById(id);
-	  if (!peminjaman) {
-		return res.status(404).json({ message: 'not found' });
-	  }
-  
-	  // Set status postingan menjadi "approved"
-	  peminjaman.check = 'rejected';
-	  await peminjaman.save();
-  
-	  // Buat notifikasi
-	  const notification = new Notification({
-		peminjamanId: peminjaman._id,
-		userId: req.user._id,
-		action: 'reject',
-		timestamp: new Date(),
-	  });
-	  await notification.save();
-  
-	  res.json({ message: 'peminjaman rejected', post });
-	} catch (error) {
-	  console.error(error);
-	  res.status(500).json({ message: 'Error rejected post' });
-	}
-  };
-  
-  
+	// Set status postingan menjadi "approved"
+	peminjaman.check = 'approved';
+	await peminjaman.save();
 
-  exports.getAllApproved = async (req, res) => {
-	try {
-	  const schemaGetAll = await Peminjaman.find({ check: "approved" });
-	  res.json(schemaGetAll);
-	} catch (e) {
-	  console.error(e);
-	  res.status(500).send("error");
-	}
-  };
+	// Buat notifikasi
+	const notification = new Notification({
+	peminjamanId: peminjaman._id,
+	userId: req.user._id,
+	action: 'approve',
+	timestamp: new Date(),
+	});
+	await notification.save();
 
-  exports.getAllRejected = async (req, res) => {
-	try {
-	  const schemaGetAll = await Peminjaman.find({ check: "rejected" });
-	  res.json(schemaGetAll);
-	} catch (e) {
-	  console.error(e);
-	  res.status(500).send("error");
-	}
-  };
+	res.json({ message: 'Peminjaman approved', inventory });
+} catch (error) {
+	console.error(error);
+	res.status(500).json({ message: 'Error approving post' });
+}
+};
   
+exports.rejectPeminjaman = async (req, res) => {
+try {
+	const { id } = req.params;
+
+	// Cari postingan berdasarkan ID
+	const peminjaman = await Peminjaman.findById(id);
+	if (!peminjaman) {
+	return res.status(404).json({ message: 'not found' });
+	}
+
+	// Set status postingan menjadi "approved"
+	peminjaman.check = 'rejected';
+	await peminjaman.save();
+
+	// Buat notifikasi
+	const notification = new Notification({
+	peminjamanId: peminjaman._id,
+	userId: req.user._id,
+	action: 'reject',
+	timestamp: new Date(),
+	});
+	await notification.save();
+
+	res.json({ message: 'peminjaman rejected', post });
+} catch (error) {
+	console.error(error);
+	res.status(500).json({ message: 'Error rejected post' });
+}
+};
+  
+exports.getAllApproved = async (req, res) => {
+try {
+	const schemaGetAll = await Peminjaman.find({ check: "approved" });
+	res.json(schemaGetAll);
+} catch (e) {
+	console.error(e);
+	res.status(500).send("error");
+}
+};
+
+exports.getAllRejected = async (req, res) => {
+try {
+	const schemaGetAll = await Peminjaman.find({ check: "rejected" });
+	res.json(schemaGetAll);
+} catch (e) {
+	console.error(e);
+	res.status(500).send("error");
+}
+};
+
 exports.getAll = async (req, res) => {
 	try {
 		const schemaGetAll = await Peminjaman.find();
