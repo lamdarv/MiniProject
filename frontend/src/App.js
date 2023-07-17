@@ -16,9 +16,9 @@ function App() {
         <Routes>
           <Route path="/" element={<Login/>} />
           <Route path="/register" element={<Register/>} />
-          <Route path="/inventories" element={<InventoryAdmin/>} />
+          <Route path="/inventories" element={localStorage.getItem('role') === 'admin' ? <InventoryAdmin /> : <Navigate to="/inventories" />} />
           <Route path="/profile" element={<Profile/>} />
-          <Route path="/inventories-mhs" element={localStorage.getItem('role') === 'mahasiswa' ? <InventoryMhs /> : <Navigate to="/" />} />
+          <Route path="/inventories-mhs" element={localStorage.getItem('role') === 'mahasiswa' ? <InventoryMhs /> : <Navigate to="/inventories-mhs" />} />
         </Routes>
       </Router>
     </div>
