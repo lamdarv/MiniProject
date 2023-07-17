@@ -42,19 +42,43 @@ export default function Register() {
 				password: password
 			};
 
-			// Send the data to the Back-End using Axios
-			axios.post('/api/login', formData)
-				.then(response => {
-					const token = response.data.token;
-					localStorage.setItem('token', token);
-					console.log(localStorage.getItem('token'));
-					setSubmitted(true);
-					setError(false);
-					navigate("/inventories");
-				})
-				.catch(error => {
-					setError(true);
-				});
+// Send the data to the Back-End using Axios
+axios.post('/api/login', formData)
+	.then(response => {
+		const token = response.data.token;
+		localStorage.setItem('token', token);
+		console.log(localStorage.getItem('token'));
+		setSubmitted(true);
+		setError(false);
+
+		// Fetch user data to get the role
+		axios.get('/api/user', {
+			headers: {
+				Authorization: `Bearer ${token}`
+			}
+		})
+			.then(userResponse => {
+				const role = userResponse.data.role; // Assuming the role value is returned from the backend
+				localStorage.setItem('role', role); // Store the role in localStorage
+				console.log(localStorage.getItem('role'));
+
+				// Redirect user based on role
+				if (role === 'mahasiswa') {
+					navigate("/inventories-mhs"); // Replace with the actual mahasiswa dashboard route
+				} else if (role === 'admin') {
+					navigate("/inventories"); // Replace with the actual admin dashboard route
+				} else {
+					// Handle unrecognized role
+					// You can redirect to a default page or show an error message
+				}
+			})
+			.catch(userError => {
+				// Handle error while fetching user data
+			});
+	})
+	.catch(error => {
+		setError(true);
+	});
 		}
 	};
 
