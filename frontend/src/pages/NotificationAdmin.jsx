@@ -24,6 +24,7 @@ const NotificationAdmin = () => {
         },
       });
       setNotificationAdmin(response.data);
+      const inventoryId = notificationAdmin.inventoryId;
       console.log(response.data);
     } catch (error) {
       console.log(error);
@@ -59,48 +60,6 @@ const NotificationAdmin = () => {
     }
   };
 
-  // const deleteInventory = async (id) => {
-  //   try {
-  //     const token = localStorage.getItem('token');
-  //     await axios.delete(`/api/inventory/${id}`, {
-  //       headers: {
-  //         Authorization: `Bearer ${token}`
-  //       }
-  //     });
-  //     window.alert("Inventaris berhasil dihapus!");
-  //     getInventories();
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  // };
-
-  // const handleDeleteInventory = async (id) => {
-  //   try {
-  //     await deleteInventory(id);
-  //     setInventoryId(id);
-  //     getInventories();
-  //     setShowModal(true);
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  // };
-
-  // const handleEdit = (id) => {
-  //   setInventoryId(id);
-  //   setShowModalUpdate(true);
-  // };
-
-  // const handleModalUpdateClose = () => {
-  //   setShowModalUpdate(false);
-  //   document.body.classList.remove('overflow-hidden');
-  // };
-
-  // const handleModalUpdateOpen = (e) => {
-  //   const inventoryId = e.target.dataset.id;
-  //   setShowModalUpdate(true);
-  //   document.body.classList.add('overflow-hidden');
-  // };
-
   return (
     <div className="relative bg-main-blue-3">
       <div className="flex min-h-screen">
@@ -131,11 +90,19 @@ const NotificationAdmin = () => {
                     <table>
                       <tbody>
                         <tr>
-                          <td className="font-quicksand font-normal text-md">
-                            <strong>Nama PJ</strong>
+                          <td className="font-quicksand font-normal text-md pr-14">
+                            <strong>Nama Penanggung Jawab</strong>
                           </td>
-                          <td className="font-quicksand font-normal text-md">
+                          <td className="font-quicksand font-normal text-md pr-14">
                             {notifAdmin.nama}
+                          </td>
+                        </tr>
+                        <tr>
+                          <td className="font-quicksand font-normal text-md pr-14">
+                            <strong>Inventaris</strong>
+                          </td>
+                          <td className="font-quicksand font-normal text-md pr-14">
+                            {/* {notifAdmin.nama} */}
                           </td>
                         </tr>
                         <tr>
@@ -154,14 +121,6 @@ const NotificationAdmin = () => {
                             {new Date(notifAdmin.tanggal).toLocaleDateString(
                               "id-ID"
                             )}
-                          </td>
-                        </tr>
-                        <tr>
-                          <td className="font-quicksand font-normal text-md pr-14">
-                            <strong>File</strong>
-                          </td>
-                          <td className="font-quicksand font-normal text-md pr-14">
-                            {notifAdmin.file}
                           </td>
                         </tr>
                       </tbody>
