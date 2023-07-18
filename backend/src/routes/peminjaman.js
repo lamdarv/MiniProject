@@ -8,8 +8,6 @@ router.post("/pinjam/:id", peminjamanController.createPinjam);
 router.patch("/:id", peminjamanController.update);
 router.delete("/:id", peminjamanController.delete);
 
-router.post("/approve/:id", peminjamanController.approvePeminjaman);
-router.post("/reject/:id", peminjamanController.rejectPeminjaman);
 router.get("/approve/:check", peminjamanController.getAllApproved);
 router.get("/reject/:check", peminjamanController.getAllRejected);
 

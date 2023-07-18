@@ -71,66 +71,6 @@ exports.createPinjam = async (req, res) => {
   }
 };
 
-exports.approvePeminjaman = async (req, res) => {
-  try {
-    const { id } = req.params;
-
-    // Cari postingan berdasarkan ID
-    const peminjaman = await Peminjaman.findById(id);
-    if (!peminjaman) {
-      return res.status(404).json({ message: "not found" });
-    }
-
-    // Set status postingan menjadi "approved"
-    peminjaman.check = "approved";
-    await peminjaman.save();
-
-    // Buat notifikasi
-    const notification = new Notification({
-      peminjamanId: peminjaman._id,
-      userId: req.user._id,
-      action: "approve",
-      timestamp: new Date(),
-    });
-    await notification.save();
-
-    res.json({ message: "Peminjaman approved", inventory });
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ message: "Error approving post" });
-  }
-};
-
-exports.rejectPeminjaman = async (req, res) => {
-  try {
-    const { id } = req.params;
-
-    // Cari postingan berdasarkan ID
-    const peminjaman = await Peminjaman.findById(id);
-    if (!peminjaman) {
-      return res.status(404).json({ message: "not found" });
-    }
-
-    // Set status postingan menjadi "approved"
-    peminjaman.check = "rejected";
-    await peminjaman.save();
-
-    // Buat notifikasi
-    const notification = new Notification({
-      peminjamanId: peminjaman._id,
-      userId: req.user._id,
-      action: "reject",
-      timestamp: new Date(),
-    });
-    await notification.save();
-
-    res.json({ message: "peminjaman rejected", post });
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ message: "Error rejected post" });
-  }
-};
-
 exports.getAllApproved = async (req, res) => {
   try {
     const schemaGetAll = await Peminjaman.find({ check: "approved" });
@@ -181,6 +121,7 @@ exports.update = async (req, res) => {
         tujuan: req.body.tujuan,
         check: req.body.check,
         file: req.file ? req.file.filename : undefined,
+        check: req.body.check,
       }
     );
     res.json(schemaUpdate);
