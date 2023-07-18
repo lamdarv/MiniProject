@@ -1,6 +1,7 @@
 const mongoose = require("mongoose");
 
-const pinjamSchema = mongoose.Schema({
+const pinjamSchema = mongoose.Schema(
+  {
     nama: {
       type: String,
       required: true,
@@ -32,6 +33,8 @@ const pinjamSchema = mongoose.Schema({
       enum: ["pending", "approved", "rejected"],
       default: "pending",
     },
-  }, { timestamps: true });
+  },
+  { timestamps: true }
+);
 
 module.exports = mongoose.model("Peminjaman", pinjamSchema, "Peminjaman");

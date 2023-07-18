@@ -1,37 +1,37 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
-import axios from '../../axiosConfig';
-import { useNavigate } from 'react-router-dom';
+import axios from "../../axiosConfig";
+import { useNavigate } from "react-router-dom";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import Select from 'react-select';
-import Modal from 'react-modal';
+import Select from "react-select";
+import Modal from "react-modal";
 
-Modal.setAppElement('#root');
+Modal.setAppElement("#root");
 
 const customStyles = {
   content: {
-    top: '50%',
-    left: '50%',
-    right: 'auto',
-    bottom: 'auto',
-    marginRight: '-50%',
-    transform: 'translate(-50%, -50%)',
-    width: '65%',
-    padding: '1 rem',
-    border: 'none',
+    top: "50%",
+    left: "50%",
+    right: "auto",
+    bottom: "auto",
+    marginRight: "-50%",
+    transform: "translate(-50%, -50%)",
+    width: "65%",
+    padding: "1 rem",
+    border: "none",
   },
   overlay: {
-    backgroundColor: 'rgba(0, 0, 0, 0.2)',
-    backdropFilter: 'blur(5px)',
-  }
+    backgroundColor: "rgba(0, 0, 0, 0.2)",
+    backdropFilter: "blur(5px)",
+  },
 };
 
 const ModalUpdateInventory = ({ isOpen, onRequestClose, inventoryId }) => {
-  const [nama, setNama] = useState('');
-  const [deskripsi, setDeskripsi] = useState('');
+  const [nama, setNama] = useState("");
+  const [deskripsi, setDeskripsi] = useState("");
   const [tgl_kepemilikan, setTglKepemilikan] = useState(new Date());
-  const [status, setStatus] = useState('');
+  const [status, setStatus] = useState("");
   const [peminjam, setPeminjam] = useState([]);
   const [gambar, setGambar] = useState(null);
   const [peminjamOptions, setPeminjamOptions] = useState([]);
@@ -45,11 +45,12 @@ const ModalUpdateInventory = ({ isOpen, onRequestClose, inventoryId }) => {
 
   const getInventoryById = async () => {
     try {
-      const token = localStorage.getItem('token');
-      axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+      const token = localStorage.getItem("token");
+      axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
 
       const response = await axios.get(`/api/inventory/${inventoryId}`);
-      const { nama, deskripsi, tgl_kepemilikan, status, list_peminjam } = response.data;
+      const { nama, deskripsi, tgl_kepemilikan, status, list_peminjam } =
+        response.data;
       setNama(nama);
       setDeskripsi(deskripsi);
       setTglKepemilikan(new Date(tgl_kepemilikan));
@@ -63,22 +64,22 @@ const ModalUpdateInventory = ({ isOpen, onRequestClose, inventoryId }) => {
 
       setGambar(gambar);
     } catch (error) {
-      console.error('Error fetching inventory:', error);
+      console.error("Error fetching inventory:", error);
     }
   };
 
-  
   const updatePost = async (event) => {
     event.preventDefault();
-  
+
     const specialCharsRegex = /[^\w\s]/gi;
-    const hasSpecialChars = specialCharsRegex.test(nama) || specialCharsRegex.test(deskripsi);
-  
+    const hasSpecialChars =
+      specialCharsRegex.test(nama) || specialCharsRegex.test(deskripsi);
+
     if (hasSpecialChars) {
-      window.alert('Invalid Data!');
+      window.alert("Invalid Data!");
       return;
     }
-  
+
     let formattedPeminjam = [];
     if (peminjam && peminjam.length > 0) {
       formattedPeminjam = peminjam.map((p) => ({
@@ -86,27 +87,29 @@ const ModalUpdateInventory = ({ isOpen, onRequestClose, inventoryId }) => {
         nama: p.value.nama,
       }));
     }
-  
+
     const formData = new FormData();
-    formData.append('gambar', gambar);
-    formData.append('nama', nama);
-    formData.append('deskripsi', deskripsi);
-    formData.append('tgl_kepemilikan', tgl_kepemilikan);
-    formData.append('status', status);
-    formData.append('list_peminjam', JSON.stringify(formattedPeminjam));
-  
+    formData.append("gambar", gambar);
+    formData.append("nama", nama);
+    formData.append("deskripsi", deskripsi);
+    formData.append("tgl_kepemilikan", tgl_kepemilikan);
+    formData.append("status", status);
+    formData.append("list_peminjam", JSON.stringify(formattedPeminjam));
+
     try {
-      const token = localStorage.getItem('token');
-      axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-      const response = await axios.patch(`/api/inventory/${inventoryId}`, formData);
-      window.alert('Inventaris berhasil diupdate!');
+      const token = localStorage.getItem("token");
+      axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+      const response = await axios.patch(
+        `/api/inventory/${inventoryId}`,
+        formData
+      );
+      window.alert("Inventaris berhasil diupdate!");
       onRequestClose();
       window.location.reload();
     } catch (error) {
-      console.error('Error updating note:', error);
+      console.error("Error updating note:", error);
     }
   };
-  
 
   const handleImage = (event) => {
     const file = event.target.files[0];
@@ -115,9 +118,9 @@ const ModalUpdateInventory = ({ isOpen, onRequestClose, inventoryId }) => {
 
   const fetchPeminjamList = async () => {
     try {
-      const token = localStorage.getItem('token');
-      axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-      const response = await axios.get('/api/user/all/users');
+      const token = localStorage.getItem("token");
+      axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+      const response = await axios.get("/api/user/all/users");
       const responseData = response.data.users;
 
       const peminjamList = responseData.map((user) => ({
@@ -127,10 +130,9 @@ const ModalUpdateInventory = ({ isOpen, onRequestClose, inventoryId }) => {
 
       setPeminjamOptions(peminjamList);
     } catch (error) {
-      console.error('Error fetching users:', error);
+      console.error("Error fetching users:", error);
     }
   };
-  
 
   return (
     <Modal
@@ -143,12 +145,15 @@ const ModalUpdateInventory = ({ isOpen, onRequestClose, inventoryId }) => {
       <div className="bg-white rounded-lg shadow-md">
         <div className="rounded-lg shadow-md p-6">
           <form onSubmit={updatePost} className="">
-            <div className='mt-10 mb-10 flex place-content-around'>
+            <div className="mt-10 mb-10 flex place-content-around">
               {/* Left Column */}
               <div className="left">
                 {/* Nama Inventaris */}
                 <div className="mb-6 w-96">
-                  <label className="font-quicksand block font-semibold text-black mb-2" htmlFor="nama">
+                  <label
+                    className="font-quicksand block font-semibold text-black mb-2"
+                    htmlFor="nama"
+                  >
                     Nama Inventaris
                   </label>
                   <input
@@ -161,7 +166,9 @@ const ModalUpdateInventory = ({ isOpen, onRequestClose, inventoryId }) => {
                     onChange={(e) => setNama(e.target.value)}
                     required
                   />
-                  <p className="text-gray-500 text-sm ml-1 mt-0">Maximal Character : 20</p>
+                  <p className="text-gray-500 text-sm ml-1 mt-0">
+                    Maximal Character : 20
+                  </p>
                 </div>
                 {/* Tanggal Kepemilikan */}
                 <div className="mb-6 relative">
@@ -184,7 +191,10 @@ const ModalUpdateInventory = ({ isOpen, onRequestClose, inventoryId }) => {
                 </div>
                 {/* Status Ketersediaan */}
                 <div className="mb-6 w-96">
-                  <label className="font-quicksand block font-semibold text-black mb-2" htmlFor="status">
+                  <label
+                    className="font-quicksand block font-semibold text-black mb-2"
+                    htmlFor="status"
+                  >
                     Status Ketersediaan
                   </label>
                   <select
@@ -203,7 +213,10 @@ const ModalUpdateInventory = ({ isOpen, onRequestClose, inventoryId }) => {
               <div className="ml-6 right">
                 {/* List Peminjam */}
                 <div className="mb-6 w-96">
-                  <label className="font-quicksand block font-semibold text-black mb-2" htmlFor="status">
+                  <label
+                    className="font-quicksand block font-semibold text-black mb-2"
+                    htmlFor="status"
+                  >
                     List Peminjam
                   </label>
                   <Select
@@ -219,7 +232,10 @@ const ModalUpdateInventory = ({ isOpen, onRequestClose, inventoryId }) => {
                 </div>
                 {/* Deskripsi */}
                 <div className=" mb-6 w-96">
-                  <label className="font-quicksand block font-semibold text-black mb-2" htmlFor="deskripsi">
+                  <label
+                    className="font-quicksand block font-semibold text-black mb-2"
+                    htmlFor="deskripsi"
+                  >
                     Deskripsi
                   </label>
                   <textarea
@@ -232,10 +248,15 @@ const ModalUpdateInventory = ({ isOpen, onRequestClose, inventoryId }) => {
                     onChange={(e) => setDeskripsi(e.target.value)}
                     required
                   />
-                  <p className="text-gray-500 text-sm ml-1 mt-0">Maximal Character : 40</p>
+                  <p className="text-gray-500 text-sm ml-1 mt-0">
+                    Maximal Character : 40
+                  </p>
                 </div>
                 <div className="mb-6 w-96">
-                  <label className="font-quicksand block font-semibold text-black mb-2" htmlFor="gambar">
+                  <label
+                    className="font-quicksand block font-semibold text-black mb-2"
+                    htmlFor="gambar"
+                  >
                     Gambar
                   </label>
                   <input
@@ -255,7 +276,10 @@ const ModalUpdateInventory = ({ isOpen, onRequestClose, inventoryId }) => {
               >
                 Update
               </button>
-              <button className="font-quicksand bg-white hover:drop-shadow-xl text-black font-normal py-1 px-7 rounded-[4px] focus:outline-none focus:shadow-outline hover:drop-shadow-xl" onClick={onRequestClose}>
+              <button
+                className="font-quicksand bg-white hover:drop-shadow-xl text-black font-normal py-1 px-7 rounded-[4px] focus:outline-none focus:shadow-outline hover:drop-shadow-xl"
+                onClick={onRequestClose}
+              >
                 Cancel
               </button>
             </div>
