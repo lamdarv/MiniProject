@@ -157,7 +157,7 @@ export default function NavbarAdmin() {
         },
       });
       const user = response.data;
-      setUsername(user.name);
+      setUsername(user.username);
     } catch (error) {
       console.log("Error fetching user data:", error);
     }
