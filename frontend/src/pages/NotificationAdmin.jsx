@@ -69,7 +69,9 @@ const NotificationAdmin = () => {
     }
   };
 
-  const sendAccept = (id) => {};
+  const sendAccept = (id) => {
+    
+  };
 
   const sendReject = (id) => {};
 
@@ -126,7 +128,7 @@ const NotificationAdmin = () => {
               <img
                 src={`${process.env.PUBLIC_URL + "/assets/document_icon.svg"}`}
                 alt="document_icon"
-                className="m-1 w-[30px]"
+                className="ml-1 mr-1 mt-2 mb-2 w-[20px]"
               />
               <p className="text-center">Dokumen</p>
             </div>
@@ -139,7 +141,7 @@ const NotificationAdmin = () => {
               <img
                 src={`${process.env.PUBLIC_URL + "/assets/accept_icon.svg"}`}
                 alt="document_icon"
-                className="m-1 w-[30px]"
+                className="ml-1 mr-1 mt-2 mb-2 w-[20px]"
               />
               <p className="text-center">Terima</p>
             </div>
@@ -152,7 +154,7 @@ const NotificationAdmin = () => {
               <img
                 src={`${process.env.PUBLIC_URL + "/assets/reject_icon.svg"}`}
                 alt="document_icon"
-                className="m-1 w-[30px]"
+                className="ml-1 mr-1 mt-2 mb-2 w-[20px]"
               />
               <p className="text-center">Tolak</p>
             </div>

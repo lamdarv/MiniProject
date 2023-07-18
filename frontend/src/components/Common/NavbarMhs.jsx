@@ -4,12 +4,9 @@ import axios from "../../axiosConfig";
 export default function NavbarMhs() {
   const [isHoveredProfilDKM, setIsHoveredProfilDKM] = useState(false);
   const [isHoveredDashboard, setIsHoveredDashboard] = useState(false);
-  const [isHoveredDKM, setIsHoveredDKM] = useState(false);
   const [isHoveredInventories, setIsHoveredInventories] = useState(false);
-  const [isHoveredCreate, setIsHoveredCreate] = useState(false);
   const [isHoveredNotif, setIsHoveredNotif] = useState(false);
   const [isHoveredKeluar, setIsHoveredKeluar] = useState(false);
-  const [isHoveredProfile, setIsHoveredProfile] = useState(false);
 
   const [isClickedProfilDKM, setIsClickedProfilDKM] = useState(false);
   const [isClickedDashboard, setIsClickedDashboard] = useState(false);
@@ -64,24 +61,6 @@ export default function NavbarMhs() {
     setIsHoveredKeluar(false);
   };
 
-  //Profile Hover
-  const handleMouseOverProfile = () => {
-    setIsHoveredProfile(true);
-  };
-
-  const handleMouseLeaveProfile = () => {
-    setIsHoveredProfile(false);
-  };
-
-  //Create Hover
-  const handleMouseOverCreate = () => {
-    setIsHoveredCreate(true);
-  };
-
-  const handleMouseLeaveCreate = () => {
-    setIsHoveredCreate(false);
-  };
-
   //Dashboard Clicked
   const handleClickDashboard = () => {
     setIsHoveredDashboard(true);
@@ -104,7 +83,7 @@ export default function NavbarMhs() {
 
   //Keluar Clicked
   const handleClickKeluar = () => {
-    setIsClickedKeluar(true);
+    // setIsClickedKeluar(true);
   };
 
   useEffect(() => {
@@ -120,6 +99,7 @@ export default function NavbarMhs() {
       setIsClickedDashboard(true);
     }
   }, []);
+
 
   useEffect(() => {
     getUser();
@@ -313,8 +293,6 @@ export default function NavbarMhs() {
       </ul>
       <a
         href="/profile"
-        onMouseOver={handleMouseOverProfile}
-        onMouseLeave={handleMouseLeaveProfile}
         className=""
       >
         <div className=" flex bg-white p-3 m-8 rounded-[10px] shadow-md hover:drop-shadow-2xl bg-custom-gray-3">

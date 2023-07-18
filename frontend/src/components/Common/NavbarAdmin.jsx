@@ -2,26 +2,21 @@ import React, { useState, useEffect } from "react";
 import axios from "../../axiosConfig";
 
 export default function NavbarAdmin() {
-  // const [isHoveredHome, setIsHoveredHome] = useState(false);
   const [isHoveredProfilDKM, setIsHoveredProfilDKM] = useState(false);
   const [isHoveredAdmin, setIsHoveredAdmin] = useState(false);
   const [isHoveredMahasiswa, setIsHoveredMahasiswa] = useState(false);
   const [isHoveredInventories, setIsHoveredInventories] = useState(false);
-  const [isHoveredCreate, setIsHoveredCreate] = useState(false);
   const [isHoveredNotif, setIsHoveredNotif] = useState(false);
   const [isHoveredKeluar, setIsHoveredKeluar] = useState(false);
-  const [isHoveredProfile, setIsHoveredProfile] = useState(false);
 
   const [isClickedProfilDKM, setIsClickedProfilDKM] = useState(false);
   const [isClickedAdmin, setIsClickedAdmin] = useState(false);
   const [isClickedMahasiswa, setIsClickedMahasiswa] = useState(false);
   const [isClickedInventories, setIsClickedInventories] = useState(false);
-  const [isClickedCreate, setIsClickedCreate] = useState(false);
   const [isClickedNotif, setIsClickedNotif] = useState(false);
   const [isClickedKeluar, setIsClickedKeluar] = useState(false);
 
   const [username, setUsername] = useState("");
-  
 
   //Home Hover atau Kegiatan Hover
   const handleMouseOverProfilDKM = () => {
@@ -77,24 +72,6 @@ export default function NavbarAdmin() {
     setIsHoveredKeluar(false);
   };
 
-  //Profile Hover
-  const handleMouseOverProfile = () => {
-    setIsHoveredProfile(true);
-  };
-
-  const handleMouseLeaveProfile = () => {
-    setIsHoveredProfile(false);
-  };
-
-  //Create Hover
-  const handleMouseOverCreate = () => {
-    setIsHoveredCreate(true);
-  };
-
-  const handleMouseLeaveCreate = () => {
-    setIsHoveredCreate(false);
-  };
-
   //Admin Clicked
   const handleClickAdmin = () => {
     setIsHoveredAdmin(true);
@@ -115,11 +92,6 @@ export default function NavbarAdmin() {
     setIsClickedInventories(true);
   };
 
-  //Create Clicked
-  const handleClickCreate = () => {
-    setIsClickedCreate(true);
-  };
-
   //Notif Clicked
   const handleClickNotif = () => {
     setIsClickedNotif(true);
@@ -128,6 +100,7 @@ export default function NavbarAdmin() {
   //Keluar Clicked
   const handleClickKeluar = () => {
     setIsClickedKeluar(true);
+    localStorage.removeItem('token');
   };
 
   useEffect(() => {
@@ -135,8 +108,6 @@ export default function NavbarAdmin() {
       setIsClickedProfilDKM(true);
     } else if (window.location.pathname === "/inventories") {
       setIsClickedInventories(true);
-    } else if (window.location.pathname === "/create-post") {
-      setIsClickedCreate(true);
     } else if (window.location.pathname === "/notification-admin") {
       setIsClickedNotif(true);
     } else if (window.location.pathname === "/keluar") {
@@ -369,8 +340,6 @@ export default function NavbarAdmin() {
       </ul>
       <a
         href="/profile"
-        onMouseOver={handleMouseOverProfile}
-        onMouseLeave={handleMouseLeaveProfile}
         className=""
       >
         <div className=" flex bg-white p-3 m-8 rounded-[10px] shadow-md hover:drop-shadow-2xl bg-custom-gray-3">
