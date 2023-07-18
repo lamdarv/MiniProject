@@ -3,6 +3,7 @@ import axios from "../axiosConfig";
 
 import NavbarAdmin from "../components/Common/NavbarAdmin";
 import ModalPassword from "../components/Profile/ModalPassword";
+import NavbarMhs from "../components/Common/NavbarMhs";
 
 export default function Profile() {
   // States for registration
@@ -10,6 +11,7 @@ export default function Profile() {
   const [nim, setNim] = useState("");
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
+  const [role, setRole] = useState("");
 
   useEffect(() => {
     getUser();
@@ -29,6 +31,7 @@ export default function Profile() {
       setNim(data.nim);
       setUsername(data.username);
       setEmail(data.email);
+      setRole(data.role);
     } catch (error) {
       console.log("Error fetching user data:", error);
     }
@@ -81,7 +84,7 @@ export default function Profile() {
   return (
     <div className="relative bg-main-blue-3 w-screen">
       <div className="flex min-h-screen">
-        <NavbarAdmin />
+        {role === "admin" ? <NavbarAdmin /> : <NavbarMhs />}
         <div className="md:container md:mx-auto">
           <div className="relative flex flex-wrap items-center justify-center h-screen left-36">
             <div className="w-[50%] h-[90%] bg-white rounded-lg shadow-md p-8 ">

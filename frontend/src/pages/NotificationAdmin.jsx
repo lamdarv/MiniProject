@@ -8,23 +8,23 @@ const NotificationAdmin = () => {
   const [inventoryNames, setInventoryNames] = useState([]);
 
   useEffect(() => {
+    const getNotificationAdmin = async () => {
+      try {
+        const token = localStorage.getItem("token");
+        const response = await axios.get("/api/peminjaman", {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        setNotificationAdmin(response.data);
+        fetchInventoryNames(response.data);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
     getNotificationAdmin();
   }, []);
-
-  const getNotificationAdmin = async () => {
-    try {
-      const token = localStorage.getItem("token");
-      const response = await axios.get("/api/peminjaman", {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-      setNotificationAdmin(response.data);
-      fetchInventoryNames(response.data);
-    } catch (error) {
-      console.log(error);
-    }
-  };
 
   const fetchInventoryNames = async (notificationData) => {
     try {
@@ -68,6 +68,10 @@ const NotificationAdmin = () => {
       console.log(error);
     }
   };
+
+  const sendAccept = (id) => {};
+
+  const sendReject = (id) => {};
 
   const renderNotificationAdmin = () => {
     return notificationAdmin.reverse().map((notifAdmin, index) => (
@@ -113,12 +117,47 @@ const NotificationAdmin = () => {
             </tbody>
           </table>
         </div>
-        <button
-          className="mt-6 font-quicksand bg-main-blue hover:drop-shadow-xl text-white font-normal py-1 px-7 rounded-[4px] focus:outline-none focus:shadow-outline"
-          onClick={() => handleDownloadPDF(notifAdmin.file)}
-        >
-          <span>Download PDF</span>
-        </button>
+        <div className="flex justify-center align-items">
+          <button
+            className="w-[10rem] mt-6 mr-3 text-lg font-poppins bg-main-blue hover:drop-shadow-xl text-white font-normal rounded-[40px] focus:outline-none focus:shadow-outline"
+            onClick={() => handleDownloadPDF(notifAdmin.file)}
+          >
+            <div className="flex items-center justify-center">
+              <img
+                src={`${process.env.PUBLIC_URL + "/assets/document_icon.svg"}`}
+                alt="document_icon"
+                className="m-1 w-[30px]"
+              />
+              <p className="text-center">Dokumen</p>
+            </div>
+          </button>
+          <button
+            className="w-[10rem] mt-6 mr-3 text-lg font-poppins bg-custom-green-1 hover:drop-shadow-xl  text-white font-normal rounded-[40px] focus:outline-none focus:shadow-outline"
+            onClick={() => sendAccept(notifAdmin.file)}
+          >
+            <div className="flex items-center justify-center">
+              <img
+                src={`${process.env.PUBLIC_URL + "/assets/accept_icon.svg"}`}
+                alt="document_icon"
+                className="m-1 w-[30px]"
+              />
+              <p className="text-center">Terima</p>
+            </div>
+          </button>
+          <button
+            className="w-[10rem] mt-6 text-lg font-poppins bg-red-600 hover:drop-shadow-xl  text-white font-normal rounded-[40px] focus:outline-none focus:shadow-outline"
+            onClick={() => sendReject(notifAdmin.file)}
+          >
+            <div className="flex items-center justify-center">
+              <img
+                src={`${process.env.PUBLIC_URL + "/assets/reject_icon.svg"}`}
+                alt="document_icon"
+                className="m-1 w-[30px]"
+              />
+              <p className="text-center">Tolak</p>
+            </div>
+          </button>
+        </div>
       </div>
     ));
   };
@@ -137,7 +176,8 @@ const NotificationAdmin = () => {
                       Inventaris Belum Tersedia!
                     </p>
                     <p className="font-quicksand font-normal text-gray-600 text-lg text-center">
-                      Mohon maaf, inventaris belum tersedia. Silakan tambahkan inventaris terlebih dahulu ya!
+                      Mohon maaf, inventaris belum tersedia. Silakan tambahkan
+                      inventaris terlebih dahulu ya!
                     </p>
                   </div>
                 </div>

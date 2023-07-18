@@ -1,11 +1,11 @@
-import { useEffect, useState } from "react";
+import React, { useState, useEffect } from "react";
+import axios from "../../axiosConfig";
 
 export default function NavbarAdmin() {
   // const [isHoveredHome, setIsHoveredHome] = useState(false);
   const [isHoveredProfilDKM, setIsHoveredProfilDKM] = useState(false);
   const [isHoveredAdmin, setIsHoveredAdmin] = useState(false);
   const [isHoveredMahasiswa, setIsHoveredMahasiswa] = useState(false);
-  const [isHoveredDKM, setIsHoveredDKM] = useState(false);
   const [isHoveredInventories, setIsHoveredInventories] = useState(false);
   const [isHoveredCreate, setIsHoveredCreate] = useState(false);
   const [isHoveredNotif, setIsHoveredNotif] = useState(false);
@@ -19,6 +19,9 @@ export default function NavbarAdmin() {
   const [isClickedCreate, setIsClickedCreate] = useState(false);
   const [isClickedNotif, setIsClickedNotif] = useState(false);
   const [isClickedKeluar, setIsClickedKeluar] = useState(false);
+
+  const [username, setUsername] = useState("");
+  
 
   //Home Hover atau Kegiatan Hover
   const handleMouseOverProfilDKM = () => {
@@ -140,6 +143,25 @@ export default function NavbarAdmin() {
       setIsClickedKeluar(true);
     }
   }, []);
+
+  useEffect(() => {
+    getUser();
+  }, []);
+
+  const getUser = async () => {
+    try {
+      const token = localStorage.getItem("token");
+      const response = await axios.get("/api/user", {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      const user = response.data;
+      setUsername(user.name);
+    } catch (error) {
+      console.log("Error fetching user data:", error);
+    }
+  };
 
   return (
     <nav className="fixed w-[20%] bg-main-blue-2 rounded-tl-0 rounded-tr-[70px] rounded-br-[70px] rounded-bl-0 h-auto">
@@ -360,7 +382,7 @@ export default function NavbarAdmin() {
             />
           </div>
           <div className="ml-2 items-center font-quicksand" id="lembaga">
-            <strong>lamdarv19</strong>
+            <strong>{username}</strong>
             <p className="text-[13px]">as Administrator</p>
           </div>
         </div>

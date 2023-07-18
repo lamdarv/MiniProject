@@ -1,4 +1,5 @@
-import { useEffect, useState } from "react";
+import React, { useState, useEffect } from "react";
+import axios from "../../axiosConfig";
 
 export default function NavbarMhs() {
   const [isHoveredProfilDKM, setIsHoveredProfilDKM] = useState(false);
@@ -15,6 +16,8 @@ export default function NavbarMhs() {
   const [isClickedInventories, setIsClickedInventories] = useState(false);
   const [isClickedNotif, setIsClickedNotif] = useState(false);
   const [isClickedKeluar, setIsClickedKeluar] = useState(false);
+
+  const [username, setUsername] = useState("");
 
   //Home Hover atau Kegiatan Hover
   const handleMouseOverProfilDKM = () => {
@@ -109,7 +112,7 @@ export default function NavbarMhs() {
       setIsClickedProfilDKM(true);
     } else if (window.location.pathname === "/inventories-mhs") {
       setIsClickedInventories(true);
-    } else if (window.location.pathname === "/notifikasi-mhs") {
+    } else if (window.location.pathname === "/notification-mhs") {
       setIsClickedNotif(true);
     } else if (window.location.pathname === "/keluar") {
       setIsClickedKeluar(true);
@@ -117,6 +120,25 @@ export default function NavbarMhs() {
       setIsClickedDashboard(true);
     }
   }, []);
+
+  useEffect(() => {
+    getUser();
+  }, []);
+
+  const getUser = async () => {
+    try {
+      const token = localStorage.getItem("token");
+      const response = await axios.get("/api/user", {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      const user = response.data;
+      setUsername(user.username);
+    } catch (error) {
+      console.log("Error fetching user data:", error);
+    }
+  };
 
   return (
     <nav className="fixed w-[20%] bg-main-blue-2 rounded-tl-0 rounded-tr-[70px] rounded-br-[70px] rounded-bl-0 h-[47rem]">
@@ -201,7 +223,7 @@ export default function NavbarMhs() {
           } hover:drop-shadow-xl items-center`}
         >
           <a
-            href="/inventories"
+            href="/inventories-mhs"
             onMouseOver={handleMouseOverInventories}
             onMouseLeave={handleMouseLeaveInventories}
             onClick={handleClickInventories}
@@ -304,7 +326,7 @@ export default function NavbarMhs() {
             />
           </div>
           <div className="ml-2 items-center font-quicksand" id="lembaga">
-            <strong>Si Ganteng</strong>
+            <strong>{username}</strong>
             <p className="text-[13px]">as Student</p>
           </div>
         </div>
