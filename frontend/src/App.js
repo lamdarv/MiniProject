@@ -7,6 +7,7 @@ import InventoryAdmin from './pages/InventoryAdmin';
 import Profile from './pages/Profile';
 import InventoryMhs from './pages/InventoryMhs';
 import NotificationAdmin from './pages/NotificationAdmin';
+import Notifikasi from './pages/Notifikasi';
 
 
 
@@ -21,6 +22,7 @@ function App() {
           <Route path="/profile" element={<Profile/>} />
           <Route path="/inventories-mhs" element={localStorage.getItem('role') === 'mahasiswa' ? <InventoryMhs /> : <Navigate to="/inventories-mhs" />} />
           <Route path="/notification-admin" element={<NotificationAdmin/>} />
+          <Route path="/notifikasi-mhs" element={<Notifikasi/>} />
         </Routes>
       </Router>
     </div>
