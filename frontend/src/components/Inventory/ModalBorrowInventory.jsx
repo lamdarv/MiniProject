@@ -117,14 +117,14 @@ const ModalBorrowInventory = ({ isOpen, onRequestClose, inventoryId }) => {
                     className="rounded-lg text-sm font-montserrat block w-full bg-white text-gray-700 border border-gray-200 rounded py-3 px-4 mb-1 leading-tight focus:outline-none"
                     id="nama"
                     type="text"
-                    maxLength="20"
+                    maxLength="45"
                     placeholder="Masukkan nama penanggung jawabnya"
                     value={nama}
                     onChange={(e) => setNama(e.target.value)}
                     required="true"
                   />
                   <p className="text-gray-500 text-sm ml-1 mt-0">
-                    Maximal Character : 20
+                    Maximal Character : 40
                   </p>
                 </div>
                 <div className="mb-6 relative w-full">
